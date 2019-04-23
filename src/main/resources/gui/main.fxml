@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ie.dylangore.dsa2.ca2.gui.ControllerMain">
+   <children>
+      <ScrollPane fx:id="mapScrollPane" hvalue="0.06" prefHeight="720.0" prefWidth="1000.0" vvalue="0.16">
+         <content>
+            <AnchorPane id="mapPane" fx:id="mapPane" onMouseClicked="#mapClicked" prefHeight="3334.0" prefWidth="5000.0" />
+         </content>
+      </ScrollPane>
+      <TabPane prefHeight="720.0" prefWidth="280.0" tabClosingPolicy="UNAVAILABLE">
+        <tabs>
+          <Tab text="Plan Route">
+               <content>
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                     <children>
+                        <Label layoutY="9.0" text="Start Point:" />
+                        <ChoiceBox fx:id="planRouteStart" layoutX="71.0" layoutY="5.0" prefHeight="25.0" prefWidth="195.0" />
+                        <Label layoutY="43.0" text="End Point:" />
+                        <ChoiceBox fx:id="planRouteEnd" layoutX="71.0" layoutY="39.0" prefHeight="25.0" prefWidth="195.0" />
+                        <ListView fx:id="planRouteWaypoints" layoutX="14.0" layoutY="73.0" prefHeight="144.0" prefWidth="252.0" />
+                     </children>
+                  </AnchorPane>
+               </content>
+          </Tab>
+            <Tab text="Modify Map">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <VBox prefHeight="200.0" prefWidth="280.0">
+                           <children>
+                              <Label prefHeight="17.0" prefWidth="280.0" text="Add Marker" textAlignment="CENTER" />
+                              <TextField fx:id="addMarkerX" promptText="X Coordinate" />
+                              <TextField fx:id="addMarkerY" promptText="Y Coordinate">
+                                 <VBox.margin>
+                                    <Insets top="2.0" />
+                                 </VBox.margin>
+                              </TextField>
+                              <TextField fx:id="addMarkerName" promptText="Name">
+                                 <VBox.margin>
+                                    <Insets top="2.0" />
+                                 </VBox.margin>
+                              </TextField>
+                              <Label text="Region:" />
+                              <ChoiceBox fx:id="addMarkerRegion" prefHeight="25.0" prefWidth="284.0">
+                                 <VBox.margin>
+                                    <Insets top="2.0" />
+                                 </VBox.margin>
+                              </ChoiceBox>
+                              <Label text="Affiliation:" />
+                              <ChoiceBox fx:id="addMarkerAffiliation" prefHeight="25.0" prefWidth="284.0">
+                                 <VBox.margin>
+                                    <Insets top="2.0" />
+                                 </VBox.margin>
+                              </ChoiceBox>
+                              <Button fx:id="btnAddMarker" mnemonicParsing="false" onAction="#addMarker" prefHeight="25.0" prefWidth="287.0" text="Add Marker">
+                                 <VBox.margin>
+                                    <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                                 </VBox.margin>
+                              </Button>
+                           </children>
+                        </VBox>
+                     </children>
+                  </AnchorPane>
+              </content>
+            </Tab>
+        </tabs>
+         <HBox.margin>
+            <Insets />
+         </HBox.margin>
+      </TabPane>
+   </children>
+</HBox>
