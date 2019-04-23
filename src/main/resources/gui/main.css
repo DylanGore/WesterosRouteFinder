@@ -7,7 +7,55 @@
 }
 
 .mapBtn {
-    -fx-background-color: black;
+    /*-fx-background-color: black;*/
     -fx-background-radius: 50%;
-    -fx-color: transparent;
+    -fx-text-fill: transparent;
+}
+
+.starkMarker{
+    -fx-background-image: url("icons/stark.png");
+}
+
+.lannisterMarker{
+    -fx-background-image: url("icons/lannister.png");
+}
+
+.targaryenMarker{
+    -fx-background-image: url("icons/targaryen.png");
+}
+
+.nightKingMarker{
+    -fx-background-image: url("icons/night-king.png");
+}
+
+.arrynMarker{
+    -fx-background-image: url("icons/arryn.png");
+}
+
+.greyjoyMarker{
+    -fx-background-image: url("icons/greyjoy.png");
+}
+
+.martellMarker{
+    -fx-background-image: url("icons/martell.png");
+}
+
+.dothrakiMarker{
+    -fx-background-image: url("icons/dothraki.png");
+}
+
+.selfMarker{
+    -fx-background-image: url("icons/self.png");
+}
+
+.otherMarker{
+    -fx-background-image: url("icons/other.png");
+}
+
+.abandonedMarker{
+    -fx-background-image: url("icons/abandoned.png");
+}
+
+.btnCoordinate{
+    -fx-background-image: url("icons/geopoint.png");
 }

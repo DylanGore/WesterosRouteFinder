@@ -26,11 +26,39 @@
                <content>
                   <AnchorPane prefHeight="200.0" prefWidth="200.0">
                      <children>
-                        <Label layoutY="9.0" text="Start Point:" />
-                        <ChoiceBox fx:id="planRouteStart" layoutX="71.0" layoutY="5.0" prefHeight="25.0" prefWidth="195.0" />
-                        <Label layoutY="43.0" text="End Point:" />
-                        <ChoiceBox fx:id="planRouteEnd" layoutX="71.0" layoutY="39.0" prefHeight="25.0" prefWidth="195.0" />
-                        <ListView fx:id="planRouteWaypoints" layoutX="14.0" layoutY="73.0" prefHeight="144.0" prefWidth="252.0" />
+                        <VBox prefHeight="690.0" prefWidth="280.0">
+                           <children>
+                              <Label text="Start Point:" />
+                              <HBox prefHeight="7.0" prefWidth="280.0">
+                                 <children>
+                                    <ChoiceBox fx:id="planRouteStart" prefHeight="25.0" prefWidth="260.0" />
+                                    <Button fx:id="btnPlanRouteStartCoords" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="25.0" prefWidth="25.0" styleClass="btnCoordinate" text="Btn">
+                                       <HBox.margin>
+                                          <Insets left="4.0" />
+                                       </HBox.margin>
+                                    </Button>
+                                 </children>
+                              </HBox>
+                              <Label layoutX="10.0" layoutY="10.0" text="End Point:" />
+                              <HBox layoutX="10.0" layoutY="27.0" prefHeight="7.0" prefWidth="280.0">
+                                 <children>
+                                    <ChoiceBox fx:id="planRouteEnd" prefHeight="25.0" prefWidth="260.0" />
+                                    <Button fx:id="btnPlanRouteEndCoords" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="25.0" prefWidth="25.0" styleClass="btnCoordinate" text="Btn">
+                                       <HBox.margin>
+                                          <Insets left="4.0" />
+                                       </HBox.margin>
+                                    </Button>
+                                 </children>
+                              </HBox>
+                              <Label text="Available Waypoints:" />
+                              <ListView fx:id="planRouteAvailableWaypoints" prefHeight="144.0" prefWidth="252.0" />
+                              <Button fx:id="btnAddWaypoint" mnemonicParsing="false" onAction="#addWaypoint" prefWidth="280.0" text="Add Selected" />
+                              <Label layoutX="10.0" layoutY="94.0" text="Included Waypoints:" />
+                              <ListView fx:id="planRouteIncludedWaypoints" layoutX="10.0" layoutY="111.0" prefHeight="144.0" prefWidth="252.0" />
+                              <Button fx:id="btnRemoveWaypoint" layoutX="10.0" layoutY="255.0" mnemonicParsing="false" onAction="#removeWaypoint" prefWidth="280.0" text="Remove Selected" />
+                              <Label fx:id="textLocation" />
+                           </children>
+                        </VBox>
                      </children>
                   </AnchorPane>
                </content>
