@@ -76,6 +76,22 @@
                   </AnchorPane>
               </content>
             </Tab>
+            <Tab text="Settings">
+                <content>
+                    <VBox minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                        <Button fx:id="btnSaveAll" mnemonicParsing="false" onAction="#saveAll" prefHeight="25.0" prefWidth="287.0" text="Save All">
+                            <VBox.margin>
+                                <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                            </VBox.margin>
+                        </Button>
+                        <Button fx:id="btnLoadAll" mnemonicParsing="false" onAction="#loadAll" prefHeight="25.0" prefWidth="287.0" text="Load All">
+                            <VBox.margin>
+                                <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                            </VBox.margin>
+                        </Button>
+                    </VBox>
+                </content>
+            </Tab>
         </tabs>
          <HBox.margin>
             <Insets />

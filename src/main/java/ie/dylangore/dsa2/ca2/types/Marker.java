@@ -10,9 +10,9 @@ public class Marker implements Serializable {
     private int yCoordinate;
     private String name;
     private String affiliation;
-    private Region region;
+    private String region;
 
-    public Marker(int x, int y, String name, String affiliation, Region region){
+    public Marker(int x, int y, String name, String affiliation, String region){
         this.setXCoordinate(x);
         this.setYCoordinate(y);
         this.setName(name);
@@ -55,11 +55,11 @@ public class Marker implements Serializable {
         this.affiliation = affiliation;
     }
 
-    public Region getRegion() {
-        return region;
+    public String getRegion() {
+        return this.region;
     }
 
-    public void setRegion(Region region) {
+    public void setRegion(String region) {
         this.region = region;
     }
 

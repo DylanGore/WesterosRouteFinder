@@ -30,6 +30,8 @@ public class ControllerMain {
     @FXML
     protected void initialize(){
         ListManager.init();
+        loadAll();
+
         addMarkerRegion.setItems(ListManager.getRegionList());
         addMarkerAffiliation.setItems(ListManager.getAffiliationList());
         planRouteWaypoints.setItems(ListManager.getMarkerList());
@@ -61,7 +63,7 @@ public class ControllerMain {
         int newX = Integer.valueOf(addMarkerX.getText());
         int newY = Integer.valueOf(addMarkerY.getText());
         String newName = addMarkerName.getText();
-        Region newRegion = (Region) addMarkerRegion.getSelectionModel().getSelectedItem();
+        String newRegion = addMarkerRegion.getSelectionModel().getSelectedItem().toString();
         String newAffiliation = addMarkerAffiliation.getSelectionModel().getSelectedItem().toString();
 
         new Marker(newX, newY, newName, newAffiliation, newRegion);
@@ -69,10 +71,10 @@ public class ControllerMain {
         // Create a new button on the map corresponding to the new marker
         int btnSize = 20;
 
-        Button markerButton = new Button();
-        markerButton.getStyleClass().clear();
-        markerButton.getStyleClass().add("mapBtn");
-        markerButton.setText(newName);
+    @FXML
+    public void saveAll(){
+        DataManager.saveAll();
+    }
         markerButton.setMinSize(btnSize, btnSize);
         markerButton.setMaxSize(btnSize, btnSize);
         markerButton.setPrefSize(btnSize, btnSize);
@@ -80,6 +82,10 @@ public class ControllerMain {
         markerButton.setLayoutX(newX - btnSize / 2);
         mapPane.getChildren().add(markerButton);
 
+    @FXML
+    public void loadAll(){
+        GuiManager.clearAllMarkerButtons();
+        DataManager.loadAll();
         updateLists();
     }
 

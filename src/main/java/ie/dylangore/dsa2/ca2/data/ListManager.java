@@ -1,14 +1,13 @@
 package ie.dylangore.dsa2.ca2.data;
 
 import ie.dylangore.dsa2.ca2.types.Marker;
-import ie.dylangore.dsa2.ca2.types.Region;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 public class ListManager {
 
     public static ObservableList<Marker> markerList;
     public static ObservableList<String> affiliationList;
-    public static ObservableList<Region> regionList;
+    public static ObservableList<String> regionList;
 
 
     public static void init(){
@@ -17,14 +16,12 @@ public class ListManager {
         affiliationList = FXCollections.observableArrayList();
         regionList = FXCollections.observableArrayList();
 
-        System.out.println("LIST INIT");
-
-        addTestData();
+//        addTestData();
     }
 
     private static void addTestData(){
         affiliationList.addAll("Daenerys", "The Crown", "Other");
-        regionList.addAll(new Region("The North"), new Region("The Vale"), new Region("The Westerlands"), new Region("The Reach"), new Region("The Stormlands"), new Region("Dorne"));
+        regionList.addAll("The North", "The Vale","The Westerlands","The Reach","The Stormlands","Dorne");
     }
 
     public static ObservableList<Marker> getMarkerList() {
@@ -35,7 +32,7 @@ public class ListManager {
         return affiliationList;
     }
 
-    public static ObservableList<Region> getRegionList(){
+    public static ObservableList<String> getRegionList(){
         return regionList;
     }
 }
