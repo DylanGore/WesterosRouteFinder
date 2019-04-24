@@ -7,15 +7,13 @@ import ie.dylangore.dsa2.ca2.data.RouteManager;
 import ie.dylangore.dsa2.ca2.types.Marker;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 
 public class ControllerMain {
 
+    @FXML private ScrollPane mapContainer;
     @FXML private AnchorPane mapPane;
 
     @FXML private ChoiceBox<Marker> availablePlaces;
@@ -134,10 +132,22 @@ public class ControllerMain {
         }
     }
 
+
+    /**
+     * 'Find on Map' feature, will scroll the map so the desired location is in view
+     * TODO needs adjusting so location is centered
+     */
     @FXML
-    public void getMarkerFromMap(){
-        Marker selected = GuiManager.getLastClickedMarker();
-        availablePlaces.getSelectionModel().select(selected);
+    public void centerMapOnMarker(){
+        Marker selected = availablePlaces.getSelectionModel().getSelectedItem();
+        double hVal = 1 * (selected.getXCoordinate() / 5000.00);
+        double vVal = 1 * (selected.getYCoordinate() / 3334.00);
+
+        System.out.println(hVal);
+        System.out.println(vVal);
+
+        mapContainer.setHvalue(hVal);
+        mapContainer.setVvalue(vVal);
     }
 
     @FXML

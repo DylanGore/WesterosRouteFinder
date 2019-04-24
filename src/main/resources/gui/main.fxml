@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ie.dylangore.dsa2.ca2.gui.ControllerMain">
    <children>
-      <ScrollPane fx:id="mapScrollPane" hvalue="0.06" prefHeight="720.0" prefWidth="1000.0" vvalue="0.16">
+      <ScrollPane fx:id="mapContainer" hvalue="0.06" prefHeight="720.0" prefWidth="1000.0" vvalue="0.16">
          <content>
             <AnchorPane id="mapPane" fx:id="mapPane" onMouseClicked="#mapClicked" prefHeight="3334.0" prefWidth="5000.0" />
          </content>
@@ -22,7 +22,7 @@
                               <HBox prefHeight="7.0" prefWidth="280.0">
                                  <children>
                                     <ChoiceBox fx:id="availablePlaces" prefHeight="25.0" prefWidth="260.0" />
-                                    <Button fx:id="btnPlanRouteStartCoords" disable="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#getMarkerFromMap" prefHeight="25.0" prefWidth="25.0" styleClass="btnCoordinate" text="Btn">
+                                    <Button fx:id="btnPlanRouteStartCoords" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#centerMapOnMarker" prefHeight="25.0" prefWidth="25.0" styleClass="btnCoordinate" text="Btn">
                                        <HBox.margin>
                                           <Insets left="4.0" />
                                        </HBox.margin>
