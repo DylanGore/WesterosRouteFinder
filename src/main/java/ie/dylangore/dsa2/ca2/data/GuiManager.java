@@ -1,16 +1,15 @@
 package ie.dylangore.dsa2.ca2.data;
 
 import ie.dylangore.dsa2.ca2.types.Marker;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.layout.AnchorPane;
 
 public class GuiManager {
 
     private static AnchorPane mapPane;
-    private static Label textLocation;
+    private static Marker lastClickedMarker;
+    private static ChoiceBox<Marker> availablePlaces;
 
     // Create a new button on the map corresponding to the new marker
     public static void addMarkerButton(String name, int x, int y, String affiliation, String region){
@@ -29,7 +28,9 @@ public class GuiManager {
         markerButton.setLayoutX(x - btnSize / 2);
         markerButton.setLayoutY(y - btnSize / 2);
         markerButton.setOnAction(e -> {
-            textLocation.setText(markerButton.getText() + " [" + x + ", " + y + "]");
+            setLastClickedMarker(ListManager.getMarkerByName(name));
+            Marker selected = getLastClickedMarker();
+            availablePlaces.getSelectionModel().select(selected);
         });
         mapPane.getChildren().add(markerButton);
     }
@@ -70,7 +71,15 @@ public class GuiManager {
         GuiManager.mapPane = mapPane;
     }
 
-    public static void setTextLocation(Label textLocation) {
-        GuiManager.textLocation = textLocation;
+    public static Marker getLastClickedMarker() {
+        return lastClickedMarker;
+    }
+
+    public static void setLastClickedMarker(Marker lastClickedMarker) {
+        GuiManager.lastClickedMarker = lastClickedMarker;
+    }
+
+    public static void setAvailablePlaces(ChoiceBox<Marker> availablePlaces) {
+        GuiManager.availablePlaces = availablePlaces;
     }
 }

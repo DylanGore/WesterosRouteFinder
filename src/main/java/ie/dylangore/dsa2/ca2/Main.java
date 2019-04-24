@@ -1,12 +1,10 @@
 package ie.dylangore.dsa2.ca2;
 
-import ie.dylangore.dsa2.ca2.data.ListManager;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class Main extends Application {

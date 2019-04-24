@@ -5,9 +5,9 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 public class ListManager {
 
-    public static ObservableList<Marker> markerList;
-    public static ObservableList<String> affiliationList;
-    public static ObservableList<String> regionList;
+    private static ObservableList<Marker> markerList;
+    private static ObservableList<String> affiliationList;
+    private static ObservableList<String> regionList;
 
 
     public static void init(){
@@ -17,6 +17,16 @@ public class ListManager {
         regionList = FXCollections.observableArrayList();
 
 //        addTestData();
+    }
+
+    public static Marker getMarkerByName(String name){
+        for(int i = 0; i < getMarkerList().size(); i++){
+            Marker marker = getMarkerList().get(i);
+            if(marker.getName().equals(name)){
+                return marker;
+            }
+        }
+        return null;
     }
 
     private static void addTestData(){

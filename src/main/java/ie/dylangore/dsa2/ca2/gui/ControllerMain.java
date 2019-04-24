@@ -3,45 +3,44 @@ package ie.dylangore.dsa2.ca2.gui;
 import ie.dylangore.dsa2.ca2.data.DataManager;
 import ie.dylangore.dsa2.ca2.data.GuiManager;
 import ie.dylangore.dsa2.ca2.data.ListManager;
+import ie.dylangore.dsa2.ca2.data.RouteManager;
 import ie.dylangore.dsa2.ca2.types.Marker;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 
 public class ControllerMain {
 
-    @FXML private Label textLocation;
     @FXML private AnchorPane mapPane;
 
-    @FXML private ChoiceBox planRouteStart, planRouteEnd;
-    @FXML private ListView<Marker> planRouteAvailableWaypoints, planRouteIncludedWaypoints;
+    @FXML private ChoiceBox<Marker> availablePlaces;
+    @FXML private Button btnSetStart, btnSetEnd, btnAddWaypoint, btnRemoveWaypoint, btnClearRoute;
+    @FXML private Label lblStart, lblEnd, lblWaypoints;
 
     @FXML private TextField addMarkerX, addMarkerY, addMarkerName;
-    @FXML private ChoiceBox addMarkerRegion, addMarkerAffiliation;
+    @FXML private ChoiceBox<String> addMarkerRegion, addMarkerAffiliation;
     @FXML private Button btnAddMarker;
 
     @FXML
     protected void initialize(){
         ListManager.init();
+        RouteManager.init();
         GuiManager.setMapPane(mapPane);
-        GuiManager.setTextLocation(textLocation);
+        GuiManager.setAvailablePlaces(availablePlaces);
         loadAll();
-
-        addMarkerRegion.setItems(ListManager.getRegionList());
-        addMarkerAffiliation.setItems(ListManager.getAffiliationList());
-        planRouteAvailableWaypoints.setItems(ListManager.getMarkerList());
-
+        updateLists();
     }
 
     @FXML
-    public void updateLists(){
-        planRouteStart.setItems(ListManager.getMarkerList());
-        planRouteEnd.setItems(ListManager.getMarkerList());
+    private void updateLists(){
+        availablePlaces.setItems(ListManager.getMarkerList());
         addMarkerRegion.setItems(ListManager.getRegionList());
         addMarkerAffiliation.setItems(ListManager.getAffiliationList());
-        planRouteAvailableWaypoints.setItems(ListManager.getMarkerList());
     }
 
     @FXML
@@ -70,17 +69,75 @@ public class ControllerMain {
     }
 
     @FXML
-    public void addWaypoint(){
-        Marker selected = planRouteAvailableWaypoints.getSelectionModel().getSelectedItem();
-        planRouteAvailableWaypoints.getItems().remove(selected);
-        planRouteIncludedWaypoints.getItems().add(selected);
+    public void modifyRoute(ActionEvent event){
+        Marker current = (Marker) availablePlaces.getSelectionModel().getSelectedItem();
+        Button source = (Button) event.getSource();
+
+        System.out.println("Current Marker: " + current.toString());
+        System.out.println("Source: " + source.getText());
+
+        if(current != null){
+            if(source == btnAddWaypoint){
+                if(!RouteManager.getWaypoints().contains(current)){
+                    RouteManager.getWaypoints().add(current);
+                }else{
+                    System.out.println("WARNING: This waypoint is already included!");
+                }
+            }else if(source == btnRemoveWaypoint){
+                if(RouteManager.getWaypoints().contains(current)){
+                    RouteManager.getWaypoints().remove(current);
+                }else{
+                    System.out.println("WARNING: This waypoint is not in the list!");
+                }
+            }else if(source == btnSetStart){
+                if(!RouteManager.getWaypoints().contains(current) && RouteManager.getEnd() != current){
+                    RouteManager.setStart(current);
+                }else{
+                    System.out.println("WARNING: This point has already been used!");
+                }
+            }else if(source == btnSetEnd){
+                if(!RouteManager.getWaypoints().contains(current) && RouteManager.getStart() != current){
+                    RouteManager.setEnd(current);
+                }else{
+                    System.out.println("WARNING: This point has already been used!");
+                }
+            }else if(source == btnClearRoute){
+                RouteManager.setStart(null);
+                RouteManager.setEnd(null);
+                RouteManager.getWaypoints().clear();
+            }
+
+            // Update labels
+            StringBuilder waypoints = new StringBuilder();
+            for(int i = 0; i < RouteManager.getWaypoints().size(); i++){
+                Marker currWaypoint = RouteManager.getWaypoints().get(i);
+                waypoints.append("\n - ");
+                waypoints.append(currWaypoint.getName());
+            }
+
+            if(!RouteManager.getWaypoints().isEmpty()){
+                lblWaypoints.setText("Waypoints:" + waypoints);
+            }else{
+                lblWaypoints.setText("Waypoints: \n - None");
+            }
+            if(RouteManager.getStart() != null){
+                lblStart.setText("Start Point: " + RouteManager.getStart().getName());
+            }else{
+                lblStart.setText("Start Point: Not Set");
+            }
+            if(RouteManager.getEnd() != null){
+                lblEnd.setText("End Point: " + RouteManager.getEnd().getName());
+            }else{
+                lblEnd.setText("End Point: Not Set");
+            }
+
+        }
     }
 
     @FXML
-    public void removeWaypoint(){
-        Marker selected = planRouteAvailableWaypoints.getSelectionModel().getSelectedItem();
-        planRouteIncludedWaypoints.getItems().remove(selected);
-        planRouteAvailableWaypoints.getItems().add(selected);
+    public void getMarkerFromMap(){
+        Marker selected = GuiManager.getLastClickedMarker();
+        availablePlaces.getSelectionModel().select(selected);
     }
 
     @FXML

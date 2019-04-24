@@ -1,18 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ChoiceBox?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ListView?>
-<?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.Tab?>
-<?import javafx.scene.control.TabPane?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
-
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ie.dylangore.dsa2.ca2.gui.ControllerMain">
    <children>
       <ScrollPane fx:id="mapScrollPane" hvalue="0.06" prefHeight="720.0" prefWidth="1000.0" vvalue="0.16">
@@ -28,35 +18,64 @@
                      <children>
                         <VBox prefHeight="690.0" prefWidth="280.0">
                            <children>
-                              <Label text="Start Point:" />
+                              <Label text="Available Places:" />
                               <HBox prefHeight="7.0" prefWidth="280.0">
                                  <children>
-                                    <ChoiceBox fx:id="planRouteStart" prefHeight="25.0" prefWidth="260.0" />
-                                    <Button fx:id="btnPlanRouteStartCoords" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="25.0" prefWidth="25.0" styleClass="btnCoordinate" text="Btn">
+                                    <ChoiceBox fx:id="availablePlaces" prefHeight="25.0" prefWidth="260.0" />
+                                    <Button fx:id="btnPlanRouteStartCoords" disable="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#getMarkerFromMap" prefHeight="25.0" prefWidth="25.0" styleClass="btnCoordinate" text="Btn">
                                        <HBox.margin>
                                           <Insets left="4.0" />
                                        </HBox.margin>
                                     </Button>
                                  </children>
                               </HBox>
-                              <Label layoutX="10.0" layoutY="10.0" text="End Point:" />
-                              <HBox layoutX="10.0" layoutY="27.0" prefHeight="7.0" prefWidth="280.0">
+                              <HBox layoutX="10.0" layoutY="27.0" prefHeight="7.0" prefWidth="280.0" />
+                              <HBox prefHeight="25.0" prefWidth="280.0">
                                  <children>
-                                    <ChoiceBox fx:id="planRouteEnd" prefHeight="25.0" prefWidth="260.0" />
-                                    <Button fx:id="btnPlanRouteEndCoords" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="25.0" prefWidth="25.0" styleClass="btnCoordinate" text="Btn">
-                                       <HBox.margin>
-                                          <Insets left="4.0" />
-                                       </HBox.margin>
-                                    </Button>
+                                    <Button fx:id="btnSetStart" mnemonicParsing="false" onAction="#modifyRoute" prefWidth="140.0" text="Set As Start" />
+                                    <Button fx:id="btnSetEnd" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#modifyRoute" prefWidth="140.0" text="Set As End" />
                                  </children>
+                                 <padding>
+                                    <Insets bottom="5.0" />
+                                 </padding>
                               </HBox>
-                              <Label text="Available Waypoints:" />
-                              <ListView fx:id="planRouteAvailableWaypoints" prefHeight="144.0" prefWidth="252.0" />
-                              <Button fx:id="btnAddWaypoint" mnemonicParsing="false" onAction="#addWaypoint" prefWidth="280.0" text="Add Selected" />
-                              <Label layoutX="10.0" layoutY="94.0" text="Included Waypoints:" />
-                              <ListView fx:id="planRouteIncludedWaypoints" layoutX="10.0" layoutY="111.0" prefHeight="144.0" prefWidth="252.0" />
-                              <Button fx:id="btnRemoveWaypoint" layoutX="10.0" layoutY="255.0" mnemonicParsing="false" onAction="#removeWaypoint" prefWidth="280.0" text="Remove Selected" />
-                              <Label fx:id="textLocation" />
+                              <HBox layoutX="10.0" layoutY="59.0" prefHeight="25.0" prefWidth="280.0">
+                                 <children>
+                                    <Button fx:id="btnAddWaypoint" mnemonicParsing="false" onAction="#modifyRoute" prefWidth="140.0" text="Add Waypoint" />
+                                    <Button fx:id="btnRemoveWaypoint" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#modifyRoute" prefWidth="140.0" text="Remove Waypoint" />
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets bottom="5.0" />
+                                 </VBox.margin>
+                              </HBox>
+                              <Button fx:id="btnClearRoute" mnemonicParsing="false" onAction="#modifyRoute" prefWidth="280.0" text="Clear Route">
+                                 <VBox.margin>
+                                    <Insets bottom="5.0" />
+                                 </VBox.margin>
+                              </Button>
+                              <Label fx:id="lblStart" text="Start Point: Not Set">
+                                 <VBox.margin>
+                                    <Insets bottom="2.0" left="2.0" />
+                                 </VBox.margin>
+                              </Label>
+                              <Label fx:id="lblEnd" text="End Point: Not Set">
+                                 <padding>
+                                    <Insets bottom="2.0" />
+                                 </padding>
+                                 <VBox.margin>
+                                    <Insets bottom="2.0" left="2.0" />
+                                 </VBox.margin>
+                              </Label>
+                              <Label fx:id="lblWaypoints" text="Waypoints: &#10; - None">
+                                 <VBox.margin>
+                                    <Insets bottom="2.0" left="2.0" />
+                                 </VBox.margin>
+                              </Label>
+                              <Separator prefWidth="200.0">
+                                 <VBox.margin>
+                                    <Insets bottom="5.0" top="5.0" />
+                                 </VBox.margin>
+                              </Separator>
                            </children>
                         </VBox>
                      </children>
