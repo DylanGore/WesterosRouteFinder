@@ -10,12 +10,13 @@ public class GuiManager {
     private static AnchorPane mapPane;
     private static Marker lastClickedMarker;
     private static ChoiceBox<Marker> availablePlaces;
+    private static Button btnAddMarker;
 
     // Create a new button on the map corresponding to the new marker
-    public static void addMarkerButton(String name, int x, int y, String affiliation, String region){
+    public static void addMarkerButton(String name, int x, int y, String affiliation, String region, int temperature, int terrain){
         int btnSize = 32;
 
-        new Marker(x, y, name, affiliation, region);
+        new Marker(x, y, name, affiliation, region, temperature, terrain);
 
         Button markerButton = new Button();
         markerButton.getStyleClass().clear();
@@ -36,7 +37,6 @@ public class GuiManager {
     }
 
     private static String getAffiliationClass(String aff){
-        System.out.println("AFF: " + aff);
         switch(aff){
             case "Daenerys":
                 return "targaryenMarker";
@@ -81,5 +81,9 @@ public class GuiManager {
 
     public static void setAvailablePlaces(ChoiceBox<Marker> availablePlaces) {
         GuiManager.availablePlaces = availablePlaces;
+    }
+
+    public static void setBtnAddMarker(Button btnAddMarker) {
+        GuiManager.btnAddMarker = btnAddMarker;
     }
 }

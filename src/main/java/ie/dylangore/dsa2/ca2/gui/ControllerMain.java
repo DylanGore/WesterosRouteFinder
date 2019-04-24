@@ -17,10 +17,10 @@ public class ControllerMain {
     @FXML private AnchorPane mapPane;
 
     @FXML private ChoiceBox<Marker> availablePlaces;
-    @FXML private Button btnSetStart, btnSetEnd, btnAddWaypoint, btnRemoveWaypoint, btnClearRoute;
-    @FXML private Label lblStart, lblEnd, lblWaypoints;
+    @FXML private Button btnSetStart, btnSetEnd, btnAddWaypoint, btnRemoveWaypoint, btnAvoid, btnRemoveAvoid, btnClearRoute, btnCalculateRoute;
+    @FXML private Label lblStart, lblEnd, lblWaypoints,  lblAvoid;
 
-    @FXML private TextField addMarkerX, addMarkerY, addMarkerName;
+    @FXML private TextField addMarkerX, addMarkerY, addMarkerName, addMarkerTemp, addMarkerTerrain;
     @FXML private ChoiceBox<String> addMarkerRegion, addMarkerAffiliation;
     @FXML private Button btnAddMarker;
 
@@ -30,6 +30,7 @@ public class ControllerMain {
         RouteManager.init();
         GuiManager.setMapPane(mapPane);
         GuiManager.setAvailablePlaces(availablePlaces);
+        GuiManager.setBtnAddMarker(btnAddMarker);
         loadAll();
         updateLists();
     }
@@ -60,10 +61,30 @@ public class ControllerMain {
         int newX = Integer.valueOf(addMarkerX.getText());
         int newY = Integer.valueOf(addMarkerY.getText());
         String newName = addMarkerName.getText();
-        String newRegion = addMarkerRegion.getSelectionModel().getSelectedItem().toString();
-        String newAffiliation = addMarkerAffiliation.getSelectionModel().getSelectedItem().toString();
+        String newRegion = addMarkerRegion.getSelectionModel().getSelectedItem();
+        String newAffiliation = addMarkerAffiliation.getSelectionModel().getSelectedItem();
+        int newTemperature = Integer.valueOf(addMarkerTemp.getText());
+        int newTerrain = Integer.valueOf(addMarkerTerrain.getText());
 
-        GuiManager.addMarkerButton(newName, newX, newY, newAffiliation, newRegion);
+        // TODO better error checking
+        if(newRegion != null && newAffiliation != null && !newName.equals("") && newX >=0 && newX <=5000 && newY>=0 && newY <=3334){
+            try{
+                if(ListManager.getMarkerByName(newName) != null){
+                    throw new Exception("A marker with this name already exists!");
+                }else if(ListManager.getMarkerByXY(newX, newY) != null){
+                    throw new Exception("A marker at the given coordinates already exists!");
+                }
+                else{
+                    GuiManager.addMarkerButton(newName, newX, newY, newAffiliation, newRegion, newTemperature, newTerrain);
+                }
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }else{
+            System.out.println("ERROR: Unable to add marker, some/all of the data is out of bounds or missing!");
+        }
+
+
     }
 
     @FXML
@@ -76,7 +97,7 @@ public class ControllerMain {
 
         if(current != null){
             if(source == btnAddWaypoint){
-                if(!RouteManager.getWaypoints().contains(current)){
+                if(!RouteManager.getWaypoints().contains(current) && !RouteManager.getAvoidList().contains(current) && RouteManager.getEnd() != current && RouteManager.getStart() != current){
                     RouteManager.getWaypoints().add(current);
                 }else{
                     System.out.println("WARNING: This waypoint is already included!");
@@ -87,14 +108,26 @@ public class ControllerMain {
                 }else{
                     System.out.println("WARNING: This waypoint is not in the list!");
                 }
+            }else if(source == btnAvoid){
+                if(!RouteManager.getWaypoints().contains(current) && !RouteManager.getAvoidList().contains(current) && RouteManager.getEnd() != current && RouteManager.getStart() != current){
+                    RouteManager.getAvoidList().add(current);
+                }else{
+                    System.out.println("WARNING: This waypoint is already used!");
+                }
+            }else if(source == btnRemoveAvoid){
+                if(RouteManager.getAvoidList().contains(current)){
+                    RouteManager.getAvoidList().remove(current);
+                }else{
+                    System.out.println("WARNING: This waypoint is not in the avoid list!");
+                }
             }else if(source == btnSetStart){
-                if(!RouteManager.getWaypoints().contains(current) && RouteManager.getEnd() != current){
+                if(!RouteManager.getWaypoints().contains(current) && !RouteManager.getAvoidList().contains(current) && RouteManager.getEnd() != current){
                     RouteManager.setStart(current);
                 }else{
                     System.out.println("WARNING: This point has already been used!");
                 }
             }else if(source == btnSetEnd){
-                if(!RouteManager.getWaypoints().contains(current) && RouteManager.getStart() != current){
+                if(!RouteManager.getWaypoints().contains(current) && !RouteManager.getAvoidList().contains(current) &&RouteManager.getStart() != current){
                     RouteManager.setEnd(current);
                 }else{
                     System.out.println("WARNING: This point has already been used!");
@@ -103,6 +136,7 @@ public class ControllerMain {
                 RouteManager.setStart(null);
                 RouteManager.setEnd(null);
                 RouteManager.getWaypoints().clear();
+                RouteManager.getAvoidList().clear();
             }
 
             // Update labels
@@ -113,10 +147,22 @@ public class ControllerMain {
                 waypoints.append(currWaypoint.getName());
             }
 
+            StringBuilder avoiding = new StringBuilder();
+            for(int i = 0; i < RouteManager.getAvoidList().size(); i++){
+                Marker currWaypoint = RouteManager.getAvoidList().get(i);
+                avoiding.append("\n - ");
+                avoiding.append(currWaypoint.getName());
+            }
+
             if(!RouteManager.getWaypoints().isEmpty()){
                 lblWaypoints.setText("Waypoints:" + waypoints);
             }else{
                 lblWaypoints.setText("Waypoints: \n - None");
+            }
+            if(!RouteManager.getAvoidList().isEmpty()){
+                lblAvoid.setText("Avoiding:" + avoiding);
+            }else{
+                lblAvoid.setText("Avoiding: \n - None");
             }
             if(RouteManager.getStart() != null){
                 lblStart.setText("Start Point: " + RouteManager.getStart().getName());
@@ -132,6 +178,11 @@ public class ControllerMain {
         }
     }
 
+    @FXML
+    public void calculateRoute(){
+        System.out.println("Calculate Route");
+    }
+
 
     /**
      * 'Find on Map' feature, will scroll the map so the desired location is in view
@@ -140,14 +191,14 @@ public class ControllerMain {
     @FXML
     public void centerMapOnMarker(){
         Marker selected = availablePlaces.getSelectionModel().getSelectedItem();
-        double hVal = 1 * (selected.getXCoordinate() / 5000.00);
-        double vVal = 1 * (selected.getYCoordinate() / 3334.00);
-
-        System.out.println(hVal);
-        System.out.println(vVal);
-
-        mapContainer.setHvalue(hVal);
-        mapContainer.setVvalue(vVal);
+        if(selected != null){
+            double hVal = 1 * (selected.getXCoordinate() / 5000.00);
+            double vVal = 1 * (selected.getYCoordinate() / 3334.00);
+            System.out.println(hVal);
+            System.out.println(vVal);
+            mapContainer.setHvalue(hVal);
+            mapContainer.setVvalue(vVal);
+        }
     }
 
     @FXML

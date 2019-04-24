@@ -49,11 +49,11 @@ public class DataManager {
                     data.add(new String[]{o.toString()});
                 }
             }else if(list == ListManager.getMarkerList()) {
-                data.add(new String[]{"NAME", "X", "Y", "REGION", "AFFILIATION"});
+                data.add(new String[]{"NAME", "X", "Y", "REGION", "AFFILIATION", "TEMPERATURE", "TERRAIN"});
 
                 for(int i = 0; i < list.size(); i++) {
                     Marker currMarker = (Marker) list.get(i);
-                    data.add(new String[]{currMarker.getName(), String.valueOf(currMarker.getXCoordinate()), String.valueOf(currMarker.getYCoordinate()), currMarker.getRegion(), currMarker.getAffiliation()});
+                    data.add(new String[]{currMarker.getName(), String.valueOf(currMarker.getXCoordinate()), String.valueOf(currMarker.getYCoordinate()), currMarker.getRegion(), currMarker.getAffiliation(), String.valueOf(currMarker.getTemperature()), String.valueOf(currMarker.getTerrain())});
                 }
             }else {
                 throw new IOException("Unsupported List!");
@@ -95,7 +95,7 @@ public class DataManager {
                     int cellCount = 1;
 
                     String name = "", affiliation = "", region = "";
-                    int x = 0, y = 0;
+                    int x = 0, y = 0, temperature = 0, terrain = 0;
 
                     for (String cell : nextRecord) {
                         switch(cellCount){
@@ -114,9 +114,15 @@ public class DataManager {
                             case 5:
                                 affiliation = cell;
                                 break;
+                            case 6:
+                                temperature = Integer.valueOf(cell);
+                                break;
+                            case 7:
+                                terrain = Integer.valueOf(cell);
+                                break;
                         }
-                        if(cellCount == 5){
-                            GuiManager.addMarkerButton(name, x,y,affiliation,region);
+                        if(cellCount == 7){
+                            GuiManager.addMarkerButton(name, x,y,affiliation,region, temperature, terrain);
                         }
                         cellCount++;
                     }

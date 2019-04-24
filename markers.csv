@@ -1,52 +1,52 @@
-"NAME","X","Y","REGION","AFFILIATION"
-"Winterfell","820","845","The North","House Stark"
-"Castle Black","960","530","The North","Abandoned"
-"The Dreadfort","1030","805","The North","Abandoned"
-"King's Landing","980","1705","The Stormlands","The Crown"
-"Casterly Rock","515","1630","The Westerlands","The Crown"
-"Lannisport","515","1650","The Westerlands","The Crown"
-"The Crag","550","1510","The Westerlands","The Crown"
-"Highgarden","630","1940","The Reach","The Crown"
-"Old Town","515","2075","The Reach","Self"
-"Storm's End","1125","1870","The Stormlands","Abandoned"
-"Harrenhal","910","1535","The Riverlands","Abandoned"
-"Riverrun","750","1485","The Riverlands","Abandoned"
-"The Twins","780","1320","The Riverlands","Abandoned"
-"Bear Island","635","640","The North","House Stark"
-"Pyke","525","1415","Islands","House Greyjoy"
-"Dragonstone","1170","1600","Islands","Daenerys"
-"Sunspear","1210","2195","Dorne","House Martell"
-"Meereen","2710","2080","Across the Narrow Sea","Daenerys"
-"Yunkai","2640","2140","Across the Narrow Sea","Daenerys"
-"Astapor","2605","2310","Across the Narrow Sea","Daenerys"
-"Valyria","2160","2600","Across the Narrow Sea","Daenerys"
-"Lys","1470","2200","Across the Narrow Sea","Self"
-"Tyrosh","1350","1990","Across the Narrow Sea","Self"
-"Myr","1550","1955","Across the Narrow Sea","Self"
-"Pentos","1460","1690","Across the Narrow Sea","Self"
-"Braavos","1450","1260","Across the Narrow Sea","Self"
-"Quarth","3435","2485","Across the Narrow Sea","Self"
-"Asshai","4450","3120","Across the Narrow Sea","Other"
-"Stygai","4555","3005","Across the Narrow Sea","Other"
-"Jinqi","4310","2580","Across the Narrow Sea","Other"
-"Volantis","1890","2255","Across the Narrow Sea","Other"
-"Vaes Dothrak","3195","1575","Across the Narrow Sea","Dothraki"
-"Last Hearth","980","650","The North","The Night King"
-"Eastwatch by the Sea","1035","530","The North","The Night King"
-"White Harbor","930","1045","The North","House Stark"
-"Moat Cailin","825","1090","The North","House Stark"
-"Barrowtown","670","1030","The North","House Stark"
-"The Eyrie","1035","1390","The Vale","House Arryn"
-"Gulltown","1210","1430","The Vale","House Arryn"
-"The Shadow Tower","860","550","The North","Abandoned"
-"Evenfall Hall","1205","1855","The Stormlands","Other"
-"Faircastle","495","1550","The Westerlands","The Crown"
-"Greywater Watch","780","1220","The North","House Stark"
-"Karhold","1160","740","The North","House Stark"
-"Deapwood Motte","660","770","The North","House Stark"
-"Torrhen's Square","690","920","The North","House Stark"
-"Oldcastle","960","1120","The North","House Stark"
-"Ramsgate","1070","1000","The North","House Stark"
-"Widow's Watch","1195","1020","The North","House Stark"
-"Flint's Finger","545","1155","The North","House Stark"
-"Sisterton","1000","1170","The Vale","House Arryn"
+NAME,X,Y,REGION,AFFILIATION,TEMPERATURE,TERRAIN
+Winterfell,820,845,The North,House Stark,0,0
+Castle Black,960,530,The North,Abandoned,0,0
+The Dreadfort,1030,805,The North,Abandoned,0,0
+King's Landing,980,1705,The Stormlands,The Crown,0,0
+Casterly Rock,515,1630,The Westerlands,The Crown,0,0
+Lannisport,515,1650,The Westerlands,The Crown,0,0
+The Crag,550,1510,The Westerlands,The Crown,0,0
+Highgarden,630,1940,The Reach,The Crown,0,0
+Old Town,515,2075,The Reach,Self,0,0
+Storm's End,1125,1870,The Stormlands,Abandoned,0,0
+Harrenhal,910,1535,The Riverlands,Abandoned,0,0
+Riverrun,750,1485,The Riverlands,Abandoned,0,0
+The Twins,780,1320,The Riverlands,Abandoned,0,0
+Bear Island,635,640,The North,House Stark,0,0
+Pyke,525,1415,Islands,House Greyjoy,0,0
+Dragonstone,1170,1600,Islands,Daenerys,0,0
+Sunspear,1210,2195,Dorne,House Martell,0,0
+Meereen,2710,2080,Across the Narrow Sea,Daenerys,0,0
+Yunkai,2640,2140,Across the Narrow Sea,Daenerys,0,0
+Astapor,2605,2310,Across the Narrow Sea,Daenerys,0,0
+Valyria,2160,2600,Across the Narrow Sea,Daenerys,0,0
+Lys,1470,2200,Across the Narrow Sea,Self,0,0
+Tyrosh,1350,1990,Across the Narrow Sea,Self,0,0
+Myr,1550,1955,Across the Narrow Sea,Self,0,0
+Pentos,1460,1690,Across the Narrow Sea,Self,0,0
+Braavos,1450,1260,Across the Narrow Sea,Self,0,0
+Quarth,3435,2485,Across the Narrow Sea,Self,0,0
+Asshai,4450,3120,Across the Narrow Sea,Other,0,0
+Stygai,4555,3005,Across the Narrow Sea,Other,0,0
+Jinqi,4310,2580,Across the Narrow Sea,Other,0,0
+Volantis,1890,2255,Across the Narrow Sea,Other,0,0
+Vaes Dothrak,3195,1575,Across the Narrow Sea,Dothraki,0,0
+Last Hearth,980,650,The North,The Night King,0,0
+Eastwatch by the Sea,1035,530,The North,The Night King,0,0
+White Harbor,930,1045,The North,House Stark,0,0
+Moat Cailin,825,1090,The North,House Stark,0,0
+Barrowtown,670,1030,The North,House Stark,0,0
+The Eyrie,1035,1390,The Vale,House Arryn,0,0
+Gulltown,1210,1430,The Vale,House Arryn,0,0
+The Shadow Tower,860,550,The North,Abandoned,0,0
+Evenfall Hall,1205,1855,The Stormlands,Other,0,0
+Faircastle,495,1550,The Westerlands,The Crown,0,0
+Greywater Watch,780,1220,The North,House Stark,0,0
+Karhold,1160,740,The North,House Stark,0,0
+Deapwood Motte,660,770,The North,House Stark,0,0
+Torrhen's Square,690,920,The North,House Stark,0,0
+Oldcastle,960,1120,The North,House Stark,0,0
+Ramsgate,1070,1000,The North,House Stark,0,0
+Widow's Watch,1195,1020,The North,House Stark,0,0
+Flint's Finger,545,1155,The North,House Stark,0,0
+Sisterton,1000,1170,The Vale,House Arryn,0,0

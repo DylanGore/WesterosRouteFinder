@@ -1,8 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
 <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ie.dylangore.dsa2.ca2.gui.ControllerMain">
    <children>
       <ScrollPane fx:id="mapContainer" hvalue="0.06" prefHeight="720.0" prefWidth="1000.0" vvalue="0.16">
@@ -48,7 +58,16 @@
                                     <Insets bottom="5.0" />
                                  </VBox.margin>
                               </HBox>
-                              <Button fx:id="btnClearRoute" mnemonicParsing="false" onAction="#modifyRoute" prefWidth="280.0" text="Clear Route">
+                              <HBox layoutX="10.0" layoutY="89.0" prefHeight="25.0" prefWidth="280.0">
+                                 <children>
+                                    <Button fx:id="btnAvoid" mnemonicParsing="false" onAction="#modifyRoute" prefWidth="140.0" text="Avoid" />
+                                    <Button fx:id="btnRemoveAvoid" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#modifyRoute" prefWidth="140.0" text="Don't Avoid" />
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets bottom="5.0" />
+                                 </VBox.margin>
+                              </HBox>
+                              <Button fx:id="btnClearRoute" mnemonicParsing="false" onAction="#modifyRoute" prefWidth="280.0" text="Clear Planned Route">
                                  <VBox.margin>
                                     <Insets bottom="5.0" />
                                  </VBox.margin>
@@ -71,7 +90,14 @@
                                     <Insets bottom="2.0" left="2.0" />
                                  </VBox.margin>
                               </Label>
+                              <Label fx:id="lblAvoid" layoutX="12.0" layoutY="189.0" text="Avoiding: &#10; - None" />
                               <Separator prefWidth="200.0">
+                                 <VBox.margin>
+                                    <Insets bottom="5.0" top="5.0" />
+                                 </VBox.margin>
+                              </Separator>
+                              <Button fx:id="btnCalculateRoute" mnemonicParsing="false" onAction="#calculateRoute" prefWidth="280.0" text="Calculate Route(s)" />
+                              <Separator layoutX="10.0" layoutY="294.0" prefWidth="200.0">
                                  <VBox.margin>
                                     <Insets bottom="5.0" top="5.0" />
                                  </VBox.margin>
@@ -88,33 +114,54 @@
                      <children>
                         <VBox prefHeight="200.0" prefWidth="280.0">
                            <children>
-                              <Label prefHeight="17.0" prefWidth="280.0" text="Add Marker" textAlignment="CENTER" />
-                              <TextField fx:id="addMarkerX" promptText="X Coordinate" />
-                              <TextField fx:id="addMarkerY" promptText="Y Coordinate">
+                              <Label prefHeight="17.0" prefWidth="280.0" text="Add/Modify Marker" textAlignment="CENTER">
                                  <VBox.margin>
-                                    <Insets top="2.0" />
+                                    <Insets left="1.0" />
+                                 </VBox.margin></Label>
+                              <HBox prefHeight="25.0" prefWidth="200.0">
+                                 <children>
+                                    <TextField fx:id="addMarkerX" promptText="X Coordinate" />
+                                    <TextField fx:id="addMarkerY" promptText="Y Coordinate" />
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets bottom="2.0" />
                                  </VBox.margin>
-                              </TextField>
+                              </HBox>
                               <TextField fx:id="addMarkerName" promptText="Name">
                                  <VBox.margin>
                                     <Insets top="2.0" />
                                  </VBox.margin>
                               </TextField>
-                              <Label text="Region:" />
+                              <Label text="Region:">
+                                 <VBox.margin>
+                                    <Insets left="1.0" />
+                                 </VBox.margin></Label>
                               <ChoiceBox fx:id="addMarkerRegion" prefHeight="25.0" prefWidth="284.0">
                                  <VBox.margin>
-                                    <Insets top="2.0" />
+                                    <Insets bottom="2.0" top="2.0" />
                                  </VBox.margin>
                               </ChoiceBox>
-                              <Label text="Affiliation:" />
+                              <Label text="Affiliation:">
+                                 <VBox.margin>
+                                    <Insets left="1.0" />
+                                 </VBox.margin></Label>
                               <ChoiceBox fx:id="addMarkerAffiliation" prefHeight="25.0" prefWidth="284.0">
                                  <VBox.margin>
-                                    <Insets top="2.0" />
+                                    <Insets bottom="2.0" top="2.0" />
                                  </VBox.margin>
                               </ChoiceBox>
+                              <HBox layoutX="10.0" layoutY="27.0" prefHeight="25.0" prefWidth="200.0">
+                                 <children>
+                                    <TextField fx:id="addMarkerTemp" promptText="Temperature" />
+                                    <TextField fx:id="addMarkerTerrain" promptText="Terrain" />
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets bottom="2.0" />
+                                 </VBox.margin>
+                              </HBox>
                               <Button fx:id="btnAddMarker" mnemonicParsing="false" onAction="#addMarker" prefHeight="25.0" prefWidth="287.0" text="Add Marker">
                                  <VBox.margin>
-                                    <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                                    <Insets bottom="2.0" />
                                  </VBox.margin>
                               </Button>
                            </children>
@@ -126,16 +173,26 @@
             <Tab text="Settings">
                 <content>
                     <VBox minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <Label text="Save/Load:">
+                        <VBox.margin>
+                           <Insets left="1.0" top="2.0" />
+                        </VBox.margin>
+                     </Label>
                         <Button fx:id="btnSaveAll" mnemonicParsing="false" onAction="#saveAll" prefHeight="25.0" prefWidth="287.0" text="Save All">
                             <VBox.margin>
-                                <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                                <Insets bottom="2.0" left="1.0" right="1.0" top="2.0" />
                             </VBox.margin>
                         </Button>
                         <Button fx:id="btnLoadAll" mnemonicParsing="false" onAction="#loadAll" prefHeight="25.0" prefWidth="287.0" text="Load All">
                             <VBox.margin>
-                                <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                                <Insets bottom="2.0" left="1.0" right="1.0" top="2.0" />
                             </VBox.margin>
                         </Button>
+                     <Separator prefWidth="200.0">
+                        <VBox.margin>
+                           <Insets bottom="5.0" top="5.0" />
+                        </VBox.margin>
+                     </Separator>
                     </VBox>
                 </content>
             </Tab>

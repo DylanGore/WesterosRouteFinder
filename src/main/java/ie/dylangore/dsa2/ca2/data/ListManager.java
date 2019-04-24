@@ -29,6 +29,16 @@ public class ListManager {
         return null;
     }
 
+    public static Marker getMarkerByXY(int x, int y){
+        for(int i = 0; i < getMarkerList().size(); i++){
+            Marker marker = getMarkerList().get(i);
+            if(marker.getXCoordinate() == x && marker.getYCoordinate() == y){
+                return marker;
+            }
+        }
+        return null;
+    }
+
     private static void addTestData(){
         affiliationList.addAll("Daenerys", "The Crown", "Other");
         regionList.addAll("The North", "The Vale","The Westerlands","The Reach","The Stormlands","Dorne");
