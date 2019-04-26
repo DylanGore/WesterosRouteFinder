@@ -3,6 +3,7 @@ package ie.dylangore.dsa2.ca2.data;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
 import com.opencsv.CSVWriter;
+import ie.dylangore.dsa2.ca2.types.Link;
 import ie.dylangore.dsa2.ca2.types.Marker;
 import javafx.collections.ObservableList;
 
@@ -19,12 +20,14 @@ public class DataManager {
         saveListToCSV("regions.csv", ListManager.getRegionList());
         saveListToCSV("affiliations.csv", ListManager.getAffiliationList());
         saveListToCSV("markers.csv", ListManager.getMarkerList());
+        saveListToCSV("links.csv", ListManager.getLinkList());
     }
 
     public static void loadAll(){
         loadListFromCSV("regions.csv", ListManager.getRegionList());
         loadListFromCSV("affiliations.csv", ListManager.getAffiliationList());
         loadListFromCSV("markers.csv", ListManager.getMarkerList() );
+        loadListFromCSV("links.csv", ListManager.getLinkList());
     }
 
     private static void saveListToCSV(String filePath, ObservableList list) {
@@ -33,7 +36,7 @@ public class DataManager {
         try {
             FileWriter output = new FileWriter(file);
             CSVWriter writer = new CSVWriter(output);
-            List<String[]> data = new ArrayList<String[]>();
+            List<String[]> data = new ArrayList<>();
 
             // Headers
             if(list == ListManager.getRegionList()) {
@@ -51,9 +54,17 @@ public class DataManager {
             }else if(list == ListManager.getMarkerList()) {
                 data.add(new String[]{"NAME", "X", "Y", "REGION", "AFFILIATION", "TEMPERATURE", "TERRAIN"});
 
-                for(int i = 0; i < list.size(); i++) {
-                    Marker currMarker = (Marker) list.get(i);
-                    data.add(new String[]{currMarker.getName(), String.valueOf(currMarker.getXCoordinate()), String.valueOf(currMarker.getYCoordinate()), currMarker.getRegion(), currMarker.getAffiliation(), String.valueOf(currMarker.getTemperature()), String.valueOf(currMarker.getTerrain())});
+                for (Object o : list) {
+                    Marker currMarker = (Marker) o;
+                    data.add(new String[]{currMarker.getName(), String.valueOf(currMarker.getXCoordinate()), String.valueOf(currMarker.getYCoordinate()), currMarker.getRegion(), currMarker.getAffiliation()});
+                }
+            }
+            else if(list == ListManager.getLinkList()) {
+                data.add(new String[]{"START", "END", "TYPE", "CLIMATE"});
+
+                for (Object o : list) {
+                    Link currLink = (Link) o;
+                    data.add(new String[]{currLink.getStart().getName(), currLink.getEnd().getName(), currLink.getType(), currLink.getClimate()});
                 }
             }else {
                 throw new IOException("Unsupported List!");
@@ -95,7 +106,7 @@ public class DataManager {
                     int cellCount = 1;
 
                     String name = "", affiliation = "", region = "";
-                    int x = 0, y = 0, temperature = 0, terrain = 0;
+                    int x = 0, y = 0;
 
                     for (String cell : nextRecord) {
                         switch(cellCount){
@@ -114,15 +125,38 @@ public class DataManager {
                             case 5:
                                 affiliation = cell;
                                 break;
-                            case 6:
-                                temperature = Integer.valueOf(cell);
+                        }
+                        if(cellCount == 5){
+                            GuiManager.addMarkerButton(name, x,y,affiliation,region);
+                        }
+                        cellCount++;
+                    }
+                }
+            }else if(list == ListManager.getLinkList()){
+                ListManager.getLinkList().clear();
+                while ((nextRecord = csvReader.readNext()) != null) {
+                    int cellCount = 1;
+
+                    Marker start = null, end = null;
+                    String type = "", climate = "";
+
+                    for (String cell : nextRecord) {
+                        switch(cellCount){
+                            case 1:
+                                start = ListManager.getMarkerByName(cell);
                                 break;
-                            case 7:
-                                terrain = Integer.valueOf(cell);
+                            case 2:
+                                end = ListManager.getMarkerByName(cell);
+                                break;
+                            case 3:
+                                type = cell;
+                                break;
+                            case 4:
+                                climate = cell;
                                 break;
                         }
-                        if(cellCount == 7){
-                            GuiManager.addMarkerButton(name, x,y,affiliation,region, temperature, terrain);
+                        if(cellCount == 4){
+                            new Link(start, end, type, climate);
                         }
                         cellCount++;
                     }

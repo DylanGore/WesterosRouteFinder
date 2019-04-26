@@ -4,6 +4,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.Tab?>
@@ -112,7 +113,7 @@
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <VBox prefHeight="200.0" prefWidth="280.0">
+                        <VBox prefHeight="720.0" prefWidth="280.0">
                            <children>
                               <Label prefHeight="17.0" prefWidth="280.0" text="Add/Modify Marker" textAlignment="CENTER">
                                  <VBox.margin>
@@ -150,20 +151,73 @@
                                     <Insets bottom="2.0" top="2.0" />
                                  </VBox.margin>
                               </ChoiceBox>
-                              <HBox layoutX="10.0" layoutY="27.0" prefHeight="25.0" prefWidth="200.0">
-                                 <children>
-                                    <TextField fx:id="addMarkerTemp" promptText="Temperature" />
-                                    <TextField fx:id="addMarkerTerrain" promptText="Terrain" />
-                                 </children>
-                                 <VBox.margin>
-                                    <Insets bottom="2.0" />
-                                 </VBox.margin>
-                              </HBox>
                               <Button fx:id="btnAddMarker" mnemonicParsing="false" onAction="#addMarker" prefHeight="25.0" prefWidth="287.0" text="Add Marker">
                                  <VBox.margin>
                                     <Insets bottom="2.0" />
                                  </VBox.margin>
                               </Button>
+                              <Separator prefWidth="200.0">
+                                 <VBox.margin>
+                                    <Insets bottom="5.0" top="5.0" />
+                                 </VBox.margin>
+                              </Separator>
+                              <Label text="Add Link:">
+                                 <padding>
+                                    <Insets bottom="2.0" />
+                                 </padding>
+                              </Label>
+                              <HBox prefHeight="25.0" prefWidth="180.0">
+                                 <children>
+                                    <ChoiceBox fx:id="addLinkPlaces" prefHeight="25.0" prefWidth="260.0" />
+                                    <Button disable="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#centerMapOnMarker" prefHeight="25.0" prefWidth="25.0" styleClass="btnCoordinate" text="Btn" />
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="2.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox prefHeight="25.0" prefWidth="280.0">
+                                 <children>
+                                    <Button fx:id="btnAddLinkStart" mnemonicParsing="false" onAction="#addLink" prefWidth="140.0" text="Set As Start" />
+                                    <Button fx:id="btnAddLinkEnd" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#addLink" prefWidth="140.0" text="Set As End" />
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" />
+                                 </padding>
+                                 <VBox.margin>
+                                    <Insets bottom="2.0" />
+                                 </VBox.margin>
+                              </HBox>
+                              <Label fx:id="lblLinkStart" text="Start: Not Set">
+                                 <VBox.margin>
+                                    <Insets bottom="2.0" />
+                                 </VBox.margin>
+                              </Label>
+                              <Label fx:id="lblLinkEnd" layoutX="10.0" layoutY="285.0" text="End Point: Not Set">
+                                 <padding>
+                                    <Insets bottom="2.0" />
+                                 </padding>
+                              </Label>
+                              <Label fx:id="lblLinkInfo" layoutX="10.0" layoutY="302.0" text="Distance: N/A | Score: N/A">
+                                 <VBox.margin>
+                                    <Insets bottom="2.0" />
+                                 </VBox.margin>
+                              </Label>
+                              <Label text="Existing Links Beginning at Start Point:">
+                                 <VBox.margin>
+                                    <Insets bottom="2.0" />
+                                 </VBox.margin>
+                              </Label>
+                              <ListView fx:id="listLinks" prefHeight="75.0" prefWidth="200.0">
+                                 <VBox.margin>
+                                    <Insets bottom="2.0" />
+                                 </VBox.margin>
+                              </ListView>
+                              <Button fx:id="btnAddLink" mnemonicParsing="false" onAction="#addLink" prefWidth="280.0" text="Add Link" />
+                              <Separator layoutX="10.0" layoutY="205.0" prefWidth="200.0">
+                                 <VBox.margin>
+                                    <Insets bottom="5.0" top="5.0" />
+                                 </VBox.margin>
+                              </Separator>
                            </children>
                         </VBox>
                      </children>

@@ -13,10 +13,10 @@ public class GuiManager {
     private static Button btnAddMarker;
 
     // Create a new button on the map corresponding to the new marker
-    public static void addMarkerButton(String name, int x, int y, String affiliation, String region, int temperature, int terrain){
+    public static void addMarkerButton(String name, int x, int y, String affiliation, String region){
         int btnSize = 32;
 
-        new Marker(x, y, name, affiliation, region, temperature, terrain);
+        new Marker(x, y, name, affiliation, region);
 
         Button markerButton = new Button();
         markerButton.getStyleClass().clear();

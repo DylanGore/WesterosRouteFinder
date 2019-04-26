@@ -22,7 +22,7 @@ public class Main extends Application {
             primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("/gui/icon.png")));
             primaryStage.setScene(scene);
             primaryStage.setResizable(false);
-            primaryStage.setTitle("Westeros Route Planner");
+            primaryStage.setTitle("Westeros Link Planner");
             System.out.println("Loading...");
             primaryStage.show();
         } catch(Exception e) {

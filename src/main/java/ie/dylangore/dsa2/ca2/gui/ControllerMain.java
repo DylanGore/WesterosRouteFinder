@@ -4,12 +4,17 @@ import ie.dylangore.dsa2.ca2.data.DataManager;
 import ie.dylangore.dsa2.ca2.data.GuiManager;
 import ie.dylangore.dsa2.ca2.data.ListManager;
 import ie.dylangore.dsa2.ca2.data.RouteManager;
+import ie.dylangore.dsa2.ca2.types.Link;
 import ie.dylangore.dsa2.ca2.types.Marker;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+
+import java.util.List;
 
 public class ControllerMain {
 
@@ -20,9 +25,14 @@ public class ControllerMain {
     @FXML private Button btnSetStart, btnSetEnd, btnAddWaypoint, btnRemoveWaypoint, btnAvoid, btnRemoveAvoid, btnClearRoute, btnCalculateRoute;
     @FXML private Label lblStart, lblEnd, lblWaypoints,  lblAvoid;
 
-    @FXML private TextField addMarkerX, addMarkerY, addMarkerName, addMarkerTemp, addMarkerTerrain;
+    @FXML private TextField addMarkerX, addMarkerY, addMarkerName;
     @FXML private ChoiceBox<String> addMarkerRegion, addMarkerAffiliation;
     @FXML private Button btnAddMarker;
+
+    @FXML private ChoiceBox<Marker> addLinkPlaces;
+    @FXML private Button btnAddLinkStart, btnAddLinkEnd, btnAddLink;
+    @FXML private ListView<Link> listLinks;
+    @FXML private Label lblLinkStart, lblLinkEnd, lblLinkInfo;
 
     @FXML
     protected void initialize(){
@@ -33,6 +43,7 @@ public class ControllerMain {
         GuiManager.setBtnAddMarker(btnAddMarker);
         loadAll();
         updateLists();
+        availablePlaces.getSelectionModel().select(0);
     }
 
     @FXML
@@ -40,20 +51,13 @@ public class ControllerMain {
         availablePlaces.setItems(ListManager.getMarkerList());
         addMarkerRegion.setItems(ListManager.getRegionList());
         addMarkerAffiliation.setItems(ListManager.getAffiliationList());
+        addLinkPlaces.setItems(ListManager.getMarkerList());
     }
 
     @FXML
     public void mapClicked(MouseEvent event){
-        int mouseX = (int)event.getX();
-        int mouseY = (int)event.getY();
-
-        System.out.println("Mouse X: " + mouseX);
-        System.out.println("Mouse Y: " + mouseY);
-
-//        lblCoords.setText("Co-Ordinates: [" + mouseX + ", " + mouseY + "]");
-
-        addMarkerX.setText(String.valueOf(mouseX));
-        addMarkerY.setText(String.valueOf(mouseY));
+        addMarkerX.setText(String.valueOf((int)event.getX()));
+        addMarkerY.setText(String.valueOf((int)event.getY()));
     }
 
     @FXML
@@ -63,8 +67,6 @@ public class ControllerMain {
         String newName = addMarkerName.getText();
         String newRegion = addMarkerRegion.getSelectionModel().getSelectedItem();
         String newAffiliation = addMarkerAffiliation.getSelectionModel().getSelectedItem();
-        int newTemperature = Integer.valueOf(addMarkerTemp.getText());
-        int newTerrain = Integer.valueOf(addMarkerTerrain.getText());
 
         // TODO better error checking
         if(newRegion != null && newAffiliation != null && !newName.equals("") && newX >=0 && newX <=5000 && newY>=0 && newY <=3334){
@@ -75,7 +77,7 @@ public class ControllerMain {
                     throw new Exception("A marker at the given coordinates already exists!");
                 }
                 else{
-                    GuiManager.addMarkerButton(newName, newX, newY, newAffiliation, newRegion, newTemperature, newTerrain);
+                    GuiManager.addMarkerButton(newName, newX, newY, newAffiliation, newRegion);
                 }
             }catch (Exception e){
                 e.printStackTrace();
@@ -178,9 +180,31 @@ public class ControllerMain {
         }
     }
 
+    public void addLink(ActionEvent event){
+        StringBuilder linkInfo = new StringBuilder();
+        Marker selected = addLinkPlaces.getSelectionModel().getSelectedItem();
+
+        if(selected != null){
+            if(event.getSource() == btnAddLinkStart){
+                lblLinkStart.setText("Start Point: " + selected.getName());
+                ObservableList<Link> localLinks = FXCollections.observableArrayList();
+                for(Link l: ListManager.getLinkList()){
+                    if(l.getStart() == selected){
+                        localLinks.add(l);
+                    }
+                }
+                listLinks.setItems(localLinks);
+            }else if(event.getSource() == btnAddLinkEnd){
+                lblLinkEnd.setText("End Point: " + selected.getName());
+            }else{
+                System.out.println("Add link");
+            }
+        }
+    }
+
     @FXML
     public void calculateRoute(){
-        System.out.println("Calculate Route");
+        System.out.println("Calculate Link");
     }
 
 
