@@ -40,6 +40,19 @@ public class ListManager {
         return null;
     }
 
+    public static void addLinksToMarkers(){
+        for(Link link: getLinkList()){
+            link.getStart().getLinks().add(link);
+        }
+    }
+
+    public static void getLinksFromMarkers(){
+        getLinkList().clear();
+        for(Marker marker: getMarkerList()){
+            getLinkList().addAll(marker.getLinks());
+        }
+    }
+
     public static ObservableList<Marker> getMarkerList() {
         return markerList;
     }

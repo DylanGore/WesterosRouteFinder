@@ -181,12 +181,32 @@
                                     <Button fx:id="btnAddLinkEnd" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#addLink" prefWidth="140.0" text="Set As End" />
                                  </children>
                                  <padding>
-                                    <Insets bottom="5.0" />
+                                    <Insets bottom="2.0" />
                                  </padding>
                                  <VBox.margin>
                                     <Insets bottom="2.0" />
                                  </VBox.margin>
                               </HBox>
+                              <Label text="Type: ">
+                                 <VBox.margin>
+                                    <Insets bottom="2.0" />
+                                 </VBox.margin>
+                              </Label>
+                              <ChoiceBox fx:id="addLinkType" prefHeight="25.0" prefWidth="280.0">
+                                 <VBox.margin>
+                                    <Insets bottom="2.0" />
+                                 </VBox.margin>
+                              </ChoiceBox>
+                              <Label layoutX="10.0" layoutY="259.0" text="Climate:">
+                                 <padding>
+                                    <Insets bottom="2.0" />
+                                 </padding>
+                              </Label>
+                              <ChoiceBox fx:id="addLinkClimate" layoutX="10.0" layoutY="278.0" prefHeight="25.0" prefWidth="280.0">
+                                 <padding>
+                                    <Insets bottom="2.0" />
+                                 </padding>
+                              </ChoiceBox>
                               <Label fx:id="lblLinkStart" text="Start: Not Set">
                                  <VBox.margin>
                                     <Insets bottom="2.0" />
@@ -196,11 +216,6 @@
                                  <padding>
                                     <Insets bottom="2.0" />
                                  </padding>
-                              </Label>
-                              <Label fx:id="lblLinkInfo" layoutX="10.0" layoutY="302.0" text="Distance: N/A | Score: N/A">
-                                 <VBox.margin>
-                                    <Insets bottom="2.0" />
-                                 </VBox.margin>
                               </Label>
                               <Label text="Existing Links Beginning at Start Point:">
                                  <VBox.margin>

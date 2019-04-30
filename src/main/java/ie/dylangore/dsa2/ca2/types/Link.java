@@ -15,7 +15,7 @@ public class Link {
         setClimate(climate);
         setDistance(calculateDistance());
 
-        ListManager.getLinkList().add(this);
+        this.getStart().getLinks().add(this);
         System.out.println("New Link: " + this.getStart().getName() + " -> " + this.getEnd().getName());
     }
 
@@ -70,20 +70,12 @@ public class Link {
 
     private void setClimate(String climate) {
         switch(climate.toLowerCase()){
-            case "very cold":{
-                this.climate = "very cold";
+            case "mild":{
+                this.climate = "mild";
                 break;
             }
-            case "cold":{
-                this.climate = "cold";
-                break;
-            }
-            case "warm":{
-                this.climate = "warm";
-                break;
-            }
-            case "hot":{
-                this.climate = "hot";
+            case "desert":{
+                this.climate = "desert";
                 break;
             }
             default:{
@@ -113,6 +105,6 @@ public class Link {
     }
 
     public String toString(){
-        return this.getStart().getName() + " -> " + this.getEnd().getName();
+        return this.getStart().getName() + " -> " + this.getEnd().getName() + " (D: " + this.getDistance() + ")";
     }
 }

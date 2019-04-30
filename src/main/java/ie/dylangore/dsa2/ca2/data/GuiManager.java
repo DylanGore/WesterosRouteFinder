@@ -9,7 +9,7 @@ public class GuiManager {
 
     private static AnchorPane mapPane;
     private static Marker lastClickedMarker;
-    private static ChoiceBox<Marker> availablePlaces;
+    private static ChoiceBox<Marker> availablePlaces, addLinkPlaces;
     private static Button btnAddMarker;
 
     // Create a new button on the map corresponding to the new marker
@@ -32,6 +32,7 @@ public class GuiManager {
             setLastClickedMarker(ListManager.getMarkerByName(name));
             Marker selected = getLastClickedMarker();
             availablePlaces.getSelectionModel().select(selected);
+            addLinkPlaces.getSelectionModel().select(selected);
         });
         mapPane.getChildren().add(markerButton);
     }
@@ -85,5 +86,9 @@ public class GuiManager {
 
     public static void setBtnAddMarker(Button btnAddMarker) {
         GuiManager.btnAddMarker = btnAddMarker;
+    }
+
+    public static void setAddLinkPlaces(ChoiceBox<Marker> addLinkPlaces) {
+        GuiManager.addLinkPlaces = addLinkPlaces;
     }
 }

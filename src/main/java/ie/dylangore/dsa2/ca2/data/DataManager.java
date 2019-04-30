@@ -61,6 +61,7 @@ public class DataManager {
             }
             else if(list == ListManager.getLinkList()) {
                 data.add(new String[]{"START", "END", "TYPE", "CLIMATE"});
+                ListManager.getLinksFromMarkers();
 
                 for (Object o : list) {
                     Link currLink = (Link) o;

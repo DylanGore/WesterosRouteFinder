@@ -3,11 +3,13 @@ package ie.dylangore.dsa2.ca2.types;
 import ie.dylangore.dsa2.ca2.data.ListManager;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class Marker implements Serializable {
 
     private int xCoordinate, yCoordinate;
     private String name, affiliation, region;
+    private ArrayList<Link> links;
 
     public Marker(int x, int y, String name, String affiliation, String region){
         this.setXCoordinate(x);
@@ -15,6 +17,7 @@ public class Marker implements Serializable {
         this.setName(name);
         this.setAffiliation(affiliation);
         this.setRegion(region);
+        this.links = new ArrayList<>();
 
         ListManager.getMarkerList().add(this);
         System.out.println("New Marker @ [" + this.getXCoordinate() + ", " + this.getYCoordinate() +"] - " + this.getName() + " (" + this.getRegion() + " | " + this.getAffiliation() + ")");
@@ -62,5 +65,9 @@ public class Marker implements Serializable {
 
     public String toString(){
         return this.getName() + " [" + this.getXCoordinate() + ", " + this.getYCoordinate() + "]";
+    }
+
+    public ArrayList<Link> getLinks() {
+        return links;
     }
 }

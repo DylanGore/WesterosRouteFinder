@@ -1,9 +1,6 @@
 package ie.dylangore.dsa2.ca2.gui;
 
-import ie.dylangore.dsa2.ca2.data.DataManager;
-import ie.dylangore.dsa2.ca2.data.GuiManager;
-import ie.dylangore.dsa2.ca2.data.ListManager;
-import ie.dylangore.dsa2.ca2.data.RouteManager;
+import ie.dylangore.dsa2.ca2.data.*;
 import ie.dylangore.dsa2.ca2.types.Link;
 import ie.dylangore.dsa2.ca2.types.Marker;
 import javafx.collections.FXCollections;
@@ -23,16 +20,17 @@ public class ControllerMain {
 
     @FXML private ChoiceBox<Marker> availablePlaces;
     @FXML private Button btnSetStart, btnSetEnd, btnAddWaypoint, btnRemoveWaypoint, btnAvoid, btnRemoveAvoid, btnClearRoute, btnCalculateRoute;
-    @FXML private Label lblStart, lblEnd, lblWaypoints,  lblAvoid;
+    @FXML private Label lblStart, lblEnd, lblWaypoints, lblAvoid;
 
     @FXML private TextField addMarkerX, addMarkerY, addMarkerName;
     @FXML private ChoiceBox<String> addMarkerRegion, addMarkerAffiliation;
     @FXML private Button btnAddMarker;
 
     @FXML private ChoiceBox<Marker> addLinkPlaces;
+    @FXML private ChoiceBox<String> addLinkType, addLinkClimate;
     @FXML private Button btnAddLinkStart, btnAddLinkEnd, btnAddLink;
     @FXML private ListView<Link> listLinks;
-    @FXML private Label lblLinkStart, lblLinkEnd, lblLinkInfo;
+    @FXML private Label lblLinkStart, lblLinkEnd;
 
     @FXML
     protected void initialize(){
@@ -40,10 +38,18 @@ public class ControllerMain {
         RouteManager.init();
         GuiManager.setMapPane(mapPane);
         GuiManager.setAvailablePlaces(availablePlaces);
+        GuiManager.setAddLinkPlaces(addLinkPlaces);
         GuiManager.setBtnAddMarker(btnAddMarker);
         loadAll();
         updateLists();
         availablePlaces.getSelectionModel().select(0);
+
+        addLinkType.getItems().addAll("Land", "Mountain", "Sea");
+        addLinkType.getSelectionModel().select(0);
+
+        addLinkClimate.getItems().addAll("Desert", "Mild", "Temperate");
+        addLinkClimate.getSelectionModel().select(2);
+        mapContainer.setPannable(true);
     }
 
     @FXML
@@ -91,7 +97,7 @@ public class ControllerMain {
 
     @FXML
     public void modifyRoute(ActionEvent event){
-        Marker current = (Marker) availablePlaces.getSelectionModel().getSelectedItem();
+        Marker current = availablePlaces.getSelectionModel().getSelectedItem();
         Button source = (Button) event.getSource();
 
         System.out.println("Current Marker: " + current.toString());
@@ -181,23 +187,25 @@ public class ControllerMain {
     }
 
     public void addLink(ActionEvent event){
-        StringBuilder linkInfo = new StringBuilder();
         Marker selected = addLinkPlaces.getSelectionModel().getSelectedItem();
+        ObservableList<Link> localLinks = FXCollections.observableArrayList();
+        localLinks.addAll(selected.getLinks());
 
-        if(selected != null){
-            if(event.getSource() == btnAddLinkStart){
-                lblLinkStart.setText("Start Point: " + selected.getName());
-                ObservableList<Link> localLinks = FXCollections.observableArrayList();
-                for(Link l: ListManager.getLinkList()){
-                    if(l.getStart() == selected){
-                        localLinks.add(l);
-                    }
-                }
+        if(event.getSource() == btnAddLinkStart){
+            lblLinkStart.setText("Start Point: " + selected.getName());
+            LinkManager.setStart(selected);
+            listLinks.setItems(localLinks);
+        }else if(event.getSource() == btnAddLinkEnd){
+            lblLinkEnd.setText("End Point: " + selected.getName());
+            LinkManager.setEnd(selected);
+        }else{
+            if(addLinkType.getSelectionModel().getSelectedItem() != null && addLinkClimate != null){
+                LinkManager.setType(addLinkType.getSelectionModel().getSelectedItem().toLowerCase());
+                LinkManager.setClimate(addLinkClimate.getSelectionModel().getSelectedItem().toLowerCase());
+                LinkManager.addLink();
+                localLinks.clear();
+                localLinks.addAll(LinkManager.getStart().getLinks());
                 listLinks.setItems(localLinks);
-            }else if(event.getSource() == btnAddLinkEnd){
-                lblLinkEnd.setText("End Point: " + selected.getName());
-            }else{
-                System.out.println("Add link");
             }
         }
     }
