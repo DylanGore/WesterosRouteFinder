@@ -162,6 +162,7 @@ public class DataManager {
                         cellCount++;
                     }
                 }
+                ListManager.getLinksFromMarkers();
             }else{
                 throw new IOException("Unsupported List!");
             }

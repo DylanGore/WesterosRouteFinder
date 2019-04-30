@@ -48,6 +48,9 @@ public class Link {
             case "sea":
                 this.type = "sea";
                 break;
+            case "mountain":
+                this.type = "mountain";
+                break;
             default:
                 this.type = "land";
                 break;

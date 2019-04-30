@@ -7,9 +7,13 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Line;
+import javafx.scene.shape.Rectangle;
 
 import java.util.List;
 
@@ -31,6 +35,8 @@ public class ControllerMain {
     @FXML private Button btnAddLinkStart, btnAddLinkEnd, btnAddLink;
     @FXML private ListView<Link> listLinks;
     @FXML private Label lblLinkStart, lblLinkEnd;
+
+    boolean linksVisible = false;
 
     @FXML
     protected void initialize(){
@@ -203,11 +209,41 @@ public class ControllerMain {
                 LinkManager.setType(addLinkType.getSelectionModel().getSelectedItem().toLowerCase());
                 LinkManager.setClimate(addLinkClimate.getSelectionModel().getSelectedItem().toLowerCase());
                 LinkManager.addLink();
+                ListManager.getLinksFromMarkers();
                 localLinks.clear();
                 localLinks.addAll(LinkManager.getStart().getLinks());
                 listLinks.setItems(localLinks);
             }
         }
+    }
+
+    @FXML
+    public void toggleLinks(){
+        if(linksVisible){
+            linksVisible = false;
+            mapPane.getChildren().removeIf(node -> node instanceof Line);
+        }else{
+            linksVisible = true;
+            for(Link link: ListManager.getLinkList()){
+                int startX = link.getStart().getXCoordinate();
+                int startY = link.getStart().getYCoordinate();
+                int endX = link.getEnd().getXCoordinate();
+                int endY = link.getEnd().getYCoordinate();
+
+                Line line = new Line(startX, startY, endX, endY);
+                line.setStrokeWidth(2);
+                if(link.getType().equals("land")){
+                    line.setStroke(Color.LAWNGREEN);
+                }else if(link.getType().equals("sea")){
+                    line.setStroke(Color.AQUA);
+                }else{
+                    line.setStroke(Color.GOLD);
+                }
+                mapPane.getChildren().add(line);
+            }
+        }
+
+        System.out.println("Link Visibility: " + linksVisible);
     }
 
     @FXML
