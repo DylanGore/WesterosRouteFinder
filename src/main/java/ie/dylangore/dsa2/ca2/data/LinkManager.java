@@ -31,7 +31,7 @@ public class LinkManager {
      * Get end point
      * @return end point
      */
-    private static Marker getEnd() {
+    public static Marker getEnd() {
         return end;
     }
 
@@ -79,19 +79,19 @@ public class LinkManager {
      * Check if each variable is valid
      * @return isValid
      */
-    private static boolean isValid(){
+    public static boolean isValid(){
         // Check if each value is set
         if(getEnd() != null && getStart() != null && getType() != null && getClimate() != null){
             // Check that start and end point are not the same
             if(getStart() == getEnd()){
-                System.out.println("Start and end points cannot be the same!");
+                GuiManager.displayErrorAlert("Marker In Use","Start and end points cannot be the same!");
                 return false;
             }
 
             // Check if an existing link exists between the two points
             for(Link link: start.getLinks()){
                 if(link.getEnd() == getEnd()){
-                    System.out.println("A link between these two points already exists!");
+                    GuiManager.displayErrorAlert("Duplicate Link","A link between these two points already exists!");
                     return false;
                 }
             }

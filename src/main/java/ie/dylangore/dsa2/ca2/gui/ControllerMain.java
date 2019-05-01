@@ -43,6 +43,7 @@ public class ControllerMain {
     @FXML private Button btnAddLinkStart, btnAddLinkEnd;
     @FXML private ListView<Link> listLinks;
     @FXML private Label lblLinkStart, lblLinkEnd;
+    @FXML private Button btnAddLinkCoords;
 
     @FXML private VBox showRouteContainer;
     @FXML private CheckBox showRouteShortest, showRouteEasiest, showRouteSafest;
@@ -64,6 +65,10 @@ public class ControllerMain {
         updateLists();
         availablePlaces.getSelectionModel().select(0);
 
+        addMarkerRegion.getSelectionModel().select(0);
+        addMarkerAffiliation.getSelectionModel().select(1);
+
+        addLinkPlaces.getSelectionModel().select(0);
         addLinkType.getItems().addAll("Land", "Mountain", "Sea");
         addLinkType.getSelectionModel().select(0);
 
@@ -100,13 +105,17 @@ public class ControllerMain {
      */
     @FXML
     public void addMarker(){
-        int newX = Integer.valueOf(addMarkerX.getText());
-        int newY = Integer.valueOf(addMarkerY.getText());
-        String newName = addMarkerName.getText();
+        int newX = -1;
+        int newY = -1;
+        String newName = "";
         String newRegion = addMarkerRegion.getSelectionModel().getSelectedItem();
         String newAffiliation = addMarkerAffiliation.getSelectionModel().getSelectedItem();
+        if(!addMarkerX.getText().equals("") && !addMarkerY.getText().equals("") && !addMarkerName.getText().equals("")){
+            newX = Integer.valueOf(addMarkerX.getText());
+            newY = Integer.valueOf(addMarkerY.getText());
+            newName = addMarkerName.getText();
+        }
 
-        // TODO better error checking
         if(newRegion != null && newAffiliation != null && !newName.equals("") && newX >=0 && newX <=5000 && newY>=0 && newY <=3334){
             try{
                 if(ListManager.getMarkerByName(newName) != null){
@@ -229,21 +238,35 @@ public class ControllerMain {
         localLinks.addAll(selected.getLinks());
 
         if(event.getSource() == btnAddLinkStart){
-            lblLinkStart.setText("Start Point: " + selected.getName());
-            LinkManager.setStart(selected);
-            listLinks.setItems(localLinks);
+            if(LinkManager.getStart() != selected && LinkManager.getEnd() != selected){
+                lblLinkStart.setText("Start Point: " + selected.getName());
+                LinkManager.setStart(selected);
+                listLinks.setItems(localLinks);
+            }else{
+                GuiManager.displayErrorAlert("Marker In Use", "This marker has already been used elsewhere!");
+            }
         }else if(event.getSource() == btnAddLinkEnd){
-            lblLinkEnd.setText("End Point: " + selected.getName());
-            LinkManager.setEnd(selected);
+            if(LinkManager.getStart() != selected && LinkManager.getEnd() != selected){
+                lblLinkEnd.setText("End Point: " + selected.getName());
+                LinkManager.setEnd(selected);
+            }else{
+                GuiManager.displayErrorAlert("Marker In Use", "This marker has already been used elsewhere!");
+            }
         }else{
             if(addLinkType.getSelectionModel().getSelectedItem() != null && addLinkClimate != null){
                 LinkManager.setType(addLinkType.getSelectionModel().getSelectedItem().toLowerCase());
                 LinkManager.setClimate(addLinkClimate.getSelectionModel().getSelectedItem().toLowerCase());
-                LinkManager.addLink();
-                ListManager.getLinksFromMarkers();
-                localLinks.clear();
-                localLinks.addAll(LinkManager.getStart().getLinks());
-                listLinks.setItems(localLinks);
+                if(LinkManager.isValid()){
+                    LinkManager.addLink();
+                    ListManager.getLinksFromMarkers();
+                    localLinks.clear();
+                    localLinks.addAll(LinkManager.getStart().getLinks());
+                    listLinks.setItems(localLinks);
+                }else{
+                    GuiManager.displayErrorAlert("GUI Error", "Unable to add link, some/all of the data is out of bounds or missing!");
+                }
+            }else{
+                GuiManager.displayErrorAlert("GUI Error", "Unable to add link, some/all of the data is out of bounds or missing!");
             }
         }
     }
@@ -434,8 +457,14 @@ public class ControllerMain {
      * TODO needs adjusting so location is centered
      */
     @FXML
-    public void centerMapOnMarker(){
-        Marker selected = availablePlaces.getSelectionModel().getSelectedItem();
+    public void centerMapOnMarker(ActionEvent event){
+        Marker selected;
+        // Center map on selected marker when adding links
+        if(event.getSource() == btnAddLinkCoords){
+            selected = addLinkPlaces.getSelectionModel().getSelectedItem();
+        }else{
+            selected = availablePlaces.getSelectionModel().getSelectedItem();
+        }
         if(selected != null){
             double hVal = 1 * (selected.getXCoordinate() / 5000.00);
             double vVal = 1 * (selected.getYCoordinate() / 3334.00);

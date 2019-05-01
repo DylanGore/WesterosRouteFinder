@@ -202,7 +202,7 @@
                               <HBox prefHeight="25.0" prefWidth="180.0">
                                  <children>
                                     <ChoiceBox fx:id="addLinkPlaces" prefHeight="25.0" prefWidth="260.0" />
-                                    <Button disable="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#centerMapOnMarker" prefHeight="25.0" prefWidth="25.0" styleClass="btnCoordinate" text="Btn" />
+                                    <Button fx:id="btnAddLinkCoords" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#centerMapOnMarker" prefHeight="25.0" prefWidth="25.0" styleClass="btnCoordinate" text="Btn" />
                                  </children>
                                  <padding>
                                     <Insets bottom="2.0" />

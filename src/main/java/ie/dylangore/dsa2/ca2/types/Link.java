@@ -1,5 +1,8 @@
 package ie.dylangore.dsa2.ca2.types;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Link between two markers (graph edge)
  */
@@ -23,6 +26,7 @@ public class Link {
         setClimate(climate);
         setDistance(calculateDistance());
         setEase(calculateEase());
+        setSafety(calculateSafety());
 
         this.getStart().getLinks().add(this);
         this.getStart().getNearby().add(this.getEnd());
@@ -171,7 +175,7 @@ public class Link {
             }
         }
 
-        // Factor in cliamte
+        // Factor in climate
         switch(getType()){
             case "mild":{
                 score = score + 2;
@@ -185,8 +189,13 @@ public class Link {
         }
 
         // Factor in Region
-        // TODO add end
-        if(this.getStart().getRegion().equals("The North") || this.getStart().getRegion().equals("Dorne")){
+        List<String> difficultRegions = new ArrayList<>();
+        difficultRegions.add("The North");
+        difficultRegions.add("Dorne");
+        difficultRegions.add("Islands");
+        difficultRegions.add("The Vale");
+        difficultRegions.add("Across the Narrow Sea");
+        if(difficultRegions.contains(this.getStart().getRegion()) || difficultRegions.contains(this.getEnd().getRegion())){
             score = score + 2;
         }
 

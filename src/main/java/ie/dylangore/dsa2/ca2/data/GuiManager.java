@@ -211,12 +211,14 @@ public class GuiManager {
      * Display an alert box for errors
      */
     public static void displayErrorAlert(String header, String content) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Error!");
-        alert.setHeaderText(header);
-        alert.setContentText(content);
-        alert.initStyle(StageStyle.UTILITY);
-        alert.showAndWait();
+        if(realGui){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error!");
+            alert.setHeaderText(header);
+            alert.setContentText(content);
+            alert.initStyle(StageStyle.UTILITY);
+            alert.showAndWait();
+        }
         System.out.println(header + ": " + content);
     }
 
