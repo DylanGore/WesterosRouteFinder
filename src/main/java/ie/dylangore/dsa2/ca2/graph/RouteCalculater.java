@@ -54,7 +54,7 @@ public class RouteCalculater {
             return pathCost;
         }
 
-        void setPathCost(double pathCost) {
+        public void setPathCost(double pathCost) {
             this.pathCost = pathCost;
         }
     }

@@ -111,17 +111,17 @@
                                           <Insets bottom="2.0" left="2.0" />
                                        </VBox.margin>
                                     </Label>
-                                    <CheckBox fx:id="showRouteShortest" mnemonicParsing="false" onAction="#showRoutes" text="Shortest Route">
+                                    <CheckBox fx:id="showRouteShortest" mnemonicParsing="false" onAction="#showRoutes" text="Shortest Route" textFill="#c4a900">
                                        <VBox.margin>
                                           <Insets bottom="2.0" left="2.0" />
                                        </VBox.margin>
                                     </CheckBox>
-                                    <CheckBox fx:id="showRouteEasiest" layoutX="10.0" layoutY="29.0" mnemonicParsing="false" onAction="#showRoutes" text="Easiest Route">
+                                    <CheckBox fx:id="showRouteEasiest" layoutX="10.0" layoutY="29.0" mnemonicParsing="false" onAction="#showRoutes" text="Easiest Route" textFill="RED">
                                        <VBox.margin>
                                           <Insets bottom="2.0" left="2.0" />
                                        </VBox.margin>
                                     </CheckBox>
-                                    <CheckBox fx:id="showRouteSafest" layoutX="10.0" layoutY="48.0" mnemonicParsing="false" onAction="#showRoutes" text="Safest Route">
+                                    <CheckBox fx:id="showRouteSafest" layoutX="10.0" layoutY="48.0" mnemonicParsing="false" onAction="#showRoutes" text="Safest Route" textFill="#008d02">
                                        <VBox.margin>
                                           <Insets bottom="2.0" left="2.0" />
                                        </VBox.margin>
@@ -301,6 +301,14 @@
                         </padding>
                      </Label>
                      <Button fx:id="btnVisLinks" mnemonicParsing="false" onAction="#toggleLinks" prefWidth="280.0" text="Show/Hide Links">
+                        <padding>
+                           <Insets bottom="2.0" />
+                        </padding>
+                        <VBox.margin>
+                           <Insets bottom="2.0" />
+                        </VBox.margin>
+                     </Button>
+                     <Button fx:id="btnAbout" layoutX="10.0" layoutY="119.0" mnemonicParsing="false" onAction="#displayAboutAlert" prefWidth="280.0" text="About">
                         <padding>
                            <Insets bottom="2.0" />
                         </padding>

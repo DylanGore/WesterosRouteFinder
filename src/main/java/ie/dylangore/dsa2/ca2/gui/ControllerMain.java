@@ -17,23 +17,30 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
+import javafx.stage.StageStyle;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+/**
+ * JavaFX main controller
+ */
 public class ControllerMain {
 
     @FXML private ScrollPane mapContainer;
     @FXML private AnchorPane mapPane;
 
     @FXML private ChoiceBox<Marker> availablePlaces;
-    @FXML private Button btnSetStart, btnSetEnd, btnAddWaypoint, btnRemoveWaypoint, btnAvoid, btnRemoveAvoid, btnClearRoute, btnCalculateRoute;
+    @FXML private Button btnSetStart, btnSetEnd, btnAddWaypoint, btnRemoveWaypoint, btnAvoid, btnRemoveAvoid, btnClearRoute;
     @FXML private Label lblStart, lblEnd, lblWaypoints, lblAvoid;
 
     @FXML private TextField addMarkerX, addMarkerY, addMarkerName;
     @FXML private ChoiceBox<String> addMarkerRegion, addMarkerAffiliation;
-    @FXML private Button btnAddMarker;
 
     @FXML private ChoiceBox<Marker> addLinkPlaces;
     @FXML private ChoiceBox<String> addLinkType, addLinkClimate;
-    @FXML private Button btnAddLinkStart, btnAddLinkEnd, btnAddLink;
+    @FXML private Button btnAddLinkStart, btnAddLinkEnd;
     @FXML private ListView<Link> listLinks;
     @FXML private Label lblLinkStart, lblLinkEnd;
 
@@ -42,6 +49,9 @@ public class ControllerMain {
 
     private boolean linksVisible = false;
 
+    /**
+     * Initialise controller and other classes and set initial values
+     */
     @FXML
     protected void initialize(){
         ListManager.init();
@@ -49,7 +59,6 @@ public class ControllerMain {
         GuiManager.setMapPane(mapPane);
         GuiManager.setAvailablePlaces(availablePlaces);
         GuiManager.setAddLinkPlaces(addLinkPlaces);
-        GuiManager.setBtnAddMarker(btnAddMarker);
         loadAll();
         updateLists();
         availablePlaces.getSelectionModel().select(0);
@@ -62,11 +71,11 @@ public class ControllerMain {
         mapContainer.setPannable(true);
 
         showRouteContainer.setVisible(false);
-        showRouteShortest.setTextFill(Color.GOLD);
-        showRouteEasiest.setTextFill(Color.RED);
-        showRouteSafest.setTextFill(Color.DARKGREEN);
     }
 
+    /**
+     * Update combo box contents
+     */
     @FXML
     private void updateLists(){
         availablePlaces.setItems(ListManager.getMarkerList());
@@ -75,14 +84,21 @@ public class ControllerMain {
         addLinkPlaces.setItems(ListManager.getMarkerList());
     }
 
+    /**
+     * Get mouse X and Y coordinates when map is clicked on
+     * @param event mouse event
+     */
     @FXML
     public void mapClicked(MouseEvent event){
         addMarkerX.setText(String.valueOf((int)event.getX()));
         addMarkerY.setText(String.valueOf((int)event.getY()));
     }
 
+    /**
+     * Add a new marker to the map
+     */
     @FXML
-    public void addMarker(ActionEvent event){
+    public void addMarker(){
         int newX = Integer.valueOf(addMarkerX.getText());
         int newY = Integer.valueOf(addMarkerY.getText());
         String newName = addMarkerName.getText();
@@ -93,9 +109,9 @@ public class ControllerMain {
         if(newRegion != null && newAffiliation != null && !newName.equals("") && newX >=0 && newX <=5000 && newY>=0 && newY <=3334){
             try{
                 if(ListManager.getMarkerByName(newName) != null){
-                    throw new Exception("A marker with this name already exists!");
+                    GuiManager.displayErrorAlert("Marker Already Exists", "A marker with this name already exists!");
                 }else if(ListManager.getMarkerByXY(newX, newY) != null){
-                    throw new Exception("A marker at the given coordinates already exists!");
+                    GuiManager.displayErrorAlert("Marker Already Exists", "A marker at the given coordinates already exists!");
                 }
                 else{
                     GuiManager.addMarkerButton(newName, newX, newY, newAffiliation, newRegion);
@@ -104,55 +120,56 @@ public class ControllerMain {
                 e.printStackTrace();
             }
         }else{
-            System.out.println("ERROR: Unable to add marker, some/all of the data is out of bounds or missing!");
+            GuiManager.displayErrorAlert("GUI Error", "Unable to add marker, some/all of the data is out of bounds or missing!");
         }
 
 
     }
 
+    /**
+     * Build a new route
+     * @param event action event
+     */
     @FXML
     public void modifyRoute(ActionEvent event){
         Marker current = availablePlaces.getSelectionModel().getSelectedItem();
         Button source = (Button) event.getSource();
 
-        System.out.println("Current Marker: " + current.toString());
-        System.out.println("Source: " + source.getText());
-
         if(source == btnAddWaypoint){
             if(!RouteManager.getWaypoints().contains(current) && !RouteManager.getAvoidList().contains(current) && RouteManager.getEnd() != current && RouteManager.getStart() != current){
                 RouteManager.getWaypoints().add(current);
             }else{
-                System.out.println("WARNING: This waypoint is already included!");
+                GuiManager.displayErrorAlert("Warning!", "This point has already been included in this list!");
             }
         }else if(source == btnRemoveWaypoint){
             if(RouteManager.getWaypoints().contains(current)){
                 RouteManager.getWaypoints().remove(current);
             }else{
-                System.out.println("WARNING: This waypoint is not in the list!");
+                GuiManager.displayErrorAlert("Warning!", "This point is not in the waypoint list!");
             }
         }else if(source == btnAvoid){
             if(!RouteManager.getWaypoints().contains(current) && !RouteManager.getAvoidList().contains(current) && RouteManager.getEnd() != current && RouteManager.getStart() != current){
                 RouteManager.getAvoidList().add(current);
             }else{
-                System.out.println("WARNING: This waypoint is already used!");
+                GuiManager.displayErrorAlert("Warning!", "This point has already been used elsewhere!");
             }
         }else if(source == btnRemoveAvoid){
             if(RouteManager.getAvoidList().contains(current)){
                 RouteManager.getAvoidList().remove(current);
             }else{
-                System.out.println("WARNING: This waypoint is not in the avoid list!");
+                GuiManager.displayErrorAlert("Warning!", "This point is not in the avoid list!");
             }
         }else if(source == btnSetStart){
             if(!RouteManager.getWaypoints().contains(current) && !RouteManager.getAvoidList().contains(current) && RouteManager.getEnd() != current){
                 RouteManager.setStart(current);
             }else{
-                System.out.println("WARNING: This point has already been used!");
+                GuiManager.displayErrorAlert("Warning!", "This point has already been used elsewhere!");
             }
         }else if(source == btnSetEnd){
             if(!RouteManager.getWaypoints().contains(current) && !RouteManager.getAvoidList().contains(current) &&RouteManager.getStart() != current){
                 RouteManager.setEnd(current);
             }else{
-                System.out.println("WARNING: This point has already been used!");
+                GuiManager.displayErrorAlert("Warning!", "This point has already been used elsewhere!");
             }
         }else if(source == btnClearRoute){
             RouteManager.setStart(null);
@@ -201,6 +218,10 @@ public class ControllerMain {
 
     }
 
+    /**
+     * Add a new link between two markers
+     * @param event action event
+     */
     public void addLink(ActionEvent event){
         Marker selected = addLinkPlaces.getSelectionModel().getSelectedItem();
         ObservableList<Link> localLinks = FXCollections.observableArrayList();
@@ -226,6 +247,9 @@ public class ControllerMain {
         }
     }
 
+    /**
+     * Toggle link visibility on map
+     */
     @FXML
     public void toggleLinks(){
         if(linksVisible){
@@ -255,43 +279,131 @@ public class ControllerMain {
         System.out.println("Link Visibility: " + linksVisible);
     }
 
+    /**
+     * Calculate routes based on values set above
+     */
     @FXML
     public void calculateRoute(){
+        // Clear any existing route lines from the map
         mapPane.getChildren().removeIf(node -> node instanceof LineShortestRoute);
         mapPane.getChildren().removeIf(node -> node instanceof LineEasiestRoute);
         mapPane.getChildren().removeIf(node -> node instanceof LineSafestRoute);
-        RouteCalculater.CostedPath shortestRoute = RouteCalculater.findCheapestPathDijkstra(RouteManager.getStart(), RouteManager.getEnd(), "shortest");
-        RouteCalculater.CostedPath easiestRoute = RouteCalculater.findCheapestPathDijkstra(RouteManager.getStart(), RouteManager.getEnd(), "easiest");
-        RouteCalculater.CostedPath safestRoute = RouteCalculater.findCheapestPathDijkstra(RouteManager.getStart(), RouteManager.getEnd(), "safest");
 
+        List<Marker> waypointQueue = new ArrayList<>(RouteManager.getWaypoints());
+        System.out.println("\n" + waypointQueue + "\n");
+        Marker startPoint = RouteManager.getStart();
+
+        RouteCalculater.CostedPath shortestRoute;
+        RouteCalculater.CostedPath easiestRoute;
+        RouteCalculater.CostedPath safestRoute;
+
+        if(waypointQueue.isEmpty()){
+            shortestRoute = RouteCalculater.findCheapestPathDijkstra(startPoint, RouteManager.getEnd(), "shortest");
+            easiestRoute = RouteCalculater.findCheapestPathDijkstra(startPoint, RouteManager.getEnd(), "easiest");
+            safestRoute = RouteCalculater.findCheapestPathDijkstra(startPoint, RouteManager.getEnd(), "safest");
+        }else{
+            RouteCalculater.CostedPath wpShortestRoute = new RouteCalculater.CostedPath();
+            RouteCalculater.CostedPath wpEasiestRoute = new RouteCalculater.CostedPath();
+            RouteCalculater.CostedPath wpSafestRoute = new RouteCalculater.CostedPath();
+            RouteCalculater.CostedPath shortestRouteAWP;
+            RouteCalculater.CostedPath easiestRouteAWP;
+            RouteCalculater.CostedPath safestRouteAWP;
+
+            Iterator queueItr = waypointQueue.iterator();
+            while(queueItr.hasNext()){
+                if(waypointQueue.size() > 0){
+                    Marker current = waypointQueue.get(0);
+                    System.out.println("Processing Waypoint Route: " + startPoint.getName() + " -> " + current.getName());
+                    RouteCalculater.CostedPath tmpShortestRoute = RouteCalculater.findCheapestPathDijkstra(startPoint, current, "shortest");
+                    RouteCalculater.CostedPath tmpEasiestRoute = RouteCalculater.findCheapestPathDijkstra(startPoint, current, "easiest");
+                    RouteCalculater.CostedPath tmpSafestRoute = RouteCalculater.findCheapestPathDijkstra(startPoint, current, "safest");
+                    // Shortest
+                    if(tmpShortestRoute != null){
+                        wpShortestRoute.getPathList().addAll(tmpShortestRoute.getPathList());
+                        wpShortestRoute.setPathCost(tmpShortestRoute.getPathCost());
+                    }
+                    // Easiest
+                    if(tmpEasiestRoute != null){
+                        wpEasiestRoute.getPathList().addAll(tmpEasiestRoute.getPathList());
+                        wpEasiestRoute.setPathCost(tmpEasiestRoute.getPathCost());
+                    }
+                    // Safest
+                    if(tmpSafestRoute != null){
+                        wpSafestRoute.getPathList().addAll(tmpSafestRoute.getPathList());
+                        wpSafestRoute.setPathCost(tmpSafestRoute.getPathCost());
+                    }
+                    startPoint = current;
+                    waypointQueue.remove(current);
+                }else{
+                    break;
+                }
+            }
+
+            // Shortest
+            shortestRouteAWP = RouteCalculater.findCheapestPathDijkstra(startPoint, RouteManager.getEnd(), "shortest");
+            if(shortestRouteAWP != null){
+                wpShortestRoute.getPathList().addAll(shortestRouteAWP.getPathList());
+                wpShortestRoute.setPathCost(wpShortestRoute.getPathCost() + shortestRouteAWP.getPathCost());
+            }
+            shortestRoute = wpShortestRoute;
+
+            // Easiest
+            easiestRouteAWP = RouteCalculater.findCheapestPathDijkstra(startPoint, RouteManager.getEnd(), "easiest");
+            if(easiestRouteAWP != null){
+                wpEasiestRoute.getPathList().addAll(easiestRouteAWP.getPathList());
+                wpEasiestRoute.setPathCost(wpEasiestRoute.getPathCost() + easiestRouteAWP.getPathCost());
+            }
+            easiestRoute = wpEasiestRoute;
+
+            // Safest
+            safestRouteAWP = RouteCalculater.findCheapestPathDijkstra(startPoint, RouteManager.getEnd(), "safest");
+            if(safestRouteAWP != null){
+                wpSafestRoute.getPathList().addAll(safestRouteAWP.getPathList());
+                wpSafestRoute.setPathCost(safestRouteAWP.getPathCost() + safestRouteAWP.getPathCost());
+            }
+            safestRoute = wpSafestRoute;
+        }
+
+        // Pass routes to GuiManager to allow line creation
         GuiManager.setRoutes(shortestRoute, easiestRoute, safestRoute);
 
+        // Show route view controls
         showRouteContainer.setVisible(true);
 
+        // Hide check box if the respective route doesn't exist
         if(shortestRoute != null){
             System.out.println("Shortest Route: " + shortestRoute.getPathCost());
+            // Default route is set as selected and drawn on the map
+            showRouteShortest.setVisible(true);
             showRouteShortest.setSelected(true);
             GuiManager.drawRoute("shortest");
         }else{
             showRouteShortest.setVisible(false);
-            System.out.println("No route found!");
+            GuiManager.displayErrorAlert("No route found!", "A valid shortest route could not be found");
         }
 
         if(easiestRoute != null){
             System.out.println("Easiest Route: " + easiestRoute.getPathCost());
+            showRouteEasiest.setVisible(true);
         }else{
-            System.out.println("No route found!");
+            GuiManager.displayErrorAlert("No route found!", "A valid easiest route could not be found");
             showRouteEasiest.setVisible(false);
         }
 
         if(safestRoute != null){
             System.out.println("Safest Route: " + safestRoute.getPathCost());
+            showRouteSafest.setVisible(true);
         }else{
-            System.out.println("No route found!");
+            GuiManager.displayErrorAlert("No route found!", "A valid safest route could not be found");
             showRouteSafest.setVisible(false);
         }
     }
 
+    /**
+     * Show/Hide routes on map
+     * If a routes corresponding checkbox is checked, show that route, if it is unchecked, hide id
+     * @param event action event
+     */
     @FXML
     public void showRoutes(ActionEvent event){
         if(event.getSource() == showRouteShortest){
@@ -333,11 +445,30 @@ public class ControllerMain {
         }
     }
 
+    /**
+     * Display about dialog window
+     */
+    @FXML
+    private void displayAboutAlert() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("About");
+        alert.setHeaderText("Citadel Maps");
+        alert.setContentText("Data Structures & Algorithms Assignment 2\nBy Dylan Gore (20081224)\n");
+        alert.initStyle(StageStyle.UTILITY);
+        alert.showAndWait();
+    }
+
+    /**
+     * Save all lists to files on menu click
+     */
     @FXML
     public void saveAll(){
         DataManager.saveAll();
     }
 
+    /**
+     * Load all lists from files on menu click
+     */
     @FXML
     public void loadAll(){
         GuiManager.clearAllMarkerButtons();
