@@ -4,6 +4,10 @@ import ie.dylangore.dsa2.ca2.types.Link;
 import ie.dylangore.dsa2.ca2.types.Marker;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+
+/**
+ * Manages and gives access to lists
+ */
 public class ListManager {
 
     private static ObservableList<Marker> markerList;
@@ -12,6 +16,9 @@ public class ListManager {
     private static ObservableList<String> regionList;
 
 
+    /**
+     * Initialise empty lists
+     */
     public static void init(){
 
         markerList = FXCollections.observableArrayList();
@@ -20,6 +27,11 @@ public class ListManager {
         regionList = FXCollections.observableArrayList();
     }
 
+    /**
+     * Search through markerList to get a marker with a given name
+     * @param name name to search with
+     * @return marker
+     */
     public static Marker getMarkerByName(String name){
         for(int i = 0; i < getMarkerList().size(); i++){
             Marker marker = getMarkerList().get(i);
@@ -30,6 +42,12 @@ public class ListManager {
         return null;
     }
 
+    /**
+     * Search through markerList to get a marker with a given x and y value
+     * @param x x coordinate
+     * @param y y coordinate
+     * @return marker
+     */
     public static Marker getMarkerByXY(int x, int y){
         for(int i = 0; i < getMarkerList().size(); i++){
             Marker marker = getMarkerList().get(i);
@@ -40,12 +58,9 @@ public class ListManager {
         return null;
     }
 
-    public static void addLinksToMarkers(){
-        for(Link link: getLinkList()){
-            link.getStart().getLinks().add(link);
-        }
-    }
-
+    /**
+     * Get links stored in each marker and add them to the master linkList
+     */
     public static void getLinksFromMarkers(){
         getLinkList().clear();
         for(Marker marker: getMarkerList()){
@@ -53,18 +68,34 @@ public class ListManager {
         }
     }
 
+    /**
+     * Get markerList
+     * @return markerList
+     */
     public static ObservableList<Marker> getMarkerList() {
         return markerList;
     }
 
+    /**
+     * Get affiliationList
+     * @return affiliationList
+     */
     public static ObservableList<String> getAffiliationList(){
         return affiliationList;
     }
 
+    /**
+     * Get regionList
+     * @return regionList
+     */
     public static ObservableList<String> getRegionList(){
         return regionList;
     }
 
+    /**
+     * Get linkList
+     * @return linkList
+     */
     public static ObservableList<Link> getLinkList() {
         return linkList;
     }

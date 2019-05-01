@@ -1,21 +1,22 @@
 package ie.dylangore.dsa2.ca2.gui;
 
 import ie.dylangore.dsa2.ca2.data.*;
+import ie.dylangore.dsa2.ca2.graph.RouteCalculater;
+import ie.dylangore.dsa2.ca2.gui.components.LineEasiestRoute;
+import ie.dylangore.dsa2.ca2.gui.components.LineSafestRoute;
+import ie.dylangore.dsa2.ca2.gui.components.LineShortestRoute;
 import ie.dylangore.dsa2.ca2.types.Link;
 import ie.dylangore.dsa2.ca2.types.Marker;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
-import javafx.scene.shape.Rectangle;
-
-import java.util.List;
 
 public class ControllerMain {
 
@@ -36,7 +37,10 @@ public class ControllerMain {
     @FXML private ListView<Link> listLinks;
     @FXML private Label lblLinkStart, lblLinkEnd;
 
-    boolean linksVisible = false;
+    @FXML private VBox showRouteContainer;
+    @FXML private CheckBox showRouteShortest, showRouteEasiest, showRouteSafest;
+
+    private boolean linksVisible = false;
 
     @FXML
     protected void initialize(){
@@ -56,6 +60,11 @@ public class ControllerMain {
         addLinkClimate.getItems().addAll("Desert", "Mild", "Temperate");
         addLinkClimate.getSelectionModel().select(2);
         mapContainer.setPannable(true);
+
+        showRouteContainer.setVisible(false);
+        showRouteShortest.setTextFill(Color.GOLD);
+        showRouteEasiest.setTextFill(Color.RED);
+        showRouteSafest.setTextFill(Color.DARKGREEN);
     }
 
     @FXML
@@ -109,87 +118,87 @@ public class ControllerMain {
         System.out.println("Current Marker: " + current.toString());
         System.out.println("Source: " + source.getText());
 
-        if(current != null){
-            if(source == btnAddWaypoint){
-                if(!RouteManager.getWaypoints().contains(current) && !RouteManager.getAvoidList().contains(current) && RouteManager.getEnd() != current && RouteManager.getStart() != current){
-                    RouteManager.getWaypoints().add(current);
-                }else{
-                    System.out.println("WARNING: This waypoint is already included!");
-                }
-            }else if(source == btnRemoveWaypoint){
-                if(RouteManager.getWaypoints().contains(current)){
-                    RouteManager.getWaypoints().remove(current);
-                }else{
-                    System.out.println("WARNING: This waypoint is not in the list!");
-                }
-            }else if(source == btnAvoid){
-                if(!RouteManager.getWaypoints().contains(current) && !RouteManager.getAvoidList().contains(current) && RouteManager.getEnd() != current && RouteManager.getStart() != current){
-                    RouteManager.getAvoidList().add(current);
-                }else{
-                    System.out.println("WARNING: This waypoint is already used!");
-                }
-            }else if(source == btnRemoveAvoid){
-                if(RouteManager.getAvoidList().contains(current)){
-                    RouteManager.getAvoidList().remove(current);
-                }else{
-                    System.out.println("WARNING: This waypoint is not in the avoid list!");
-                }
-            }else if(source == btnSetStart){
-                if(!RouteManager.getWaypoints().contains(current) && !RouteManager.getAvoidList().contains(current) && RouteManager.getEnd() != current){
-                    RouteManager.setStart(current);
-                }else{
-                    System.out.println("WARNING: This point has already been used!");
-                }
-            }else if(source == btnSetEnd){
-                if(!RouteManager.getWaypoints().contains(current) && !RouteManager.getAvoidList().contains(current) &&RouteManager.getStart() != current){
-                    RouteManager.setEnd(current);
-                }else{
-                    System.out.println("WARNING: This point has already been used!");
-                }
-            }else if(source == btnClearRoute){
-                RouteManager.setStart(null);
-                RouteManager.setEnd(null);
-                RouteManager.getWaypoints().clear();
-                RouteManager.getAvoidList().clear();
-            }
-
-            // Update labels
-            StringBuilder waypoints = new StringBuilder();
-            for(int i = 0; i < RouteManager.getWaypoints().size(); i++){
-                Marker currWaypoint = RouteManager.getWaypoints().get(i);
-                waypoints.append("\n - ");
-                waypoints.append(currWaypoint.getName());
-            }
-
-            StringBuilder avoiding = new StringBuilder();
-            for(int i = 0; i < RouteManager.getAvoidList().size(); i++){
-                Marker currWaypoint = RouteManager.getAvoidList().get(i);
-                avoiding.append("\n - ");
-                avoiding.append(currWaypoint.getName());
-            }
-
-            if(!RouteManager.getWaypoints().isEmpty()){
-                lblWaypoints.setText("Waypoints:" + waypoints);
+        if(source == btnAddWaypoint){
+            if(!RouteManager.getWaypoints().contains(current) && !RouteManager.getAvoidList().contains(current) && RouteManager.getEnd() != current && RouteManager.getStart() != current){
+                RouteManager.getWaypoints().add(current);
             }else{
-                lblWaypoints.setText("Waypoints: \n - None");
+                System.out.println("WARNING: This waypoint is already included!");
             }
-            if(!RouteManager.getAvoidList().isEmpty()){
-                lblAvoid.setText("Avoiding:" + avoiding);
+        }else if(source == btnRemoveWaypoint){
+            if(RouteManager.getWaypoints().contains(current)){
+                RouteManager.getWaypoints().remove(current);
             }else{
-                lblAvoid.setText("Avoiding: \n - None");
+                System.out.println("WARNING: This waypoint is not in the list!");
             }
-            if(RouteManager.getStart() != null){
-                lblStart.setText("Start Point: " + RouteManager.getStart().getName());
+        }else if(source == btnAvoid){
+            if(!RouteManager.getWaypoints().contains(current) && !RouteManager.getAvoidList().contains(current) && RouteManager.getEnd() != current && RouteManager.getStart() != current){
+                RouteManager.getAvoidList().add(current);
             }else{
-                lblStart.setText("Start Point: Not Set");
+                System.out.println("WARNING: This waypoint is already used!");
             }
-            if(RouteManager.getEnd() != null){
-                lblEnd.setText("End Point: " + RouteManager.getEnd().getName());
+        }else if(source == btnRemoveAvoid){
+            if(RouteManager.getAvoidList().contains(current)){
+                RouteManager.getAvoidList().remove(current);
             }else{
-                lblEnd.setText("End Point: Not Set");
+                System.out.println("WARNING: This waypoint is not in the avoid list!");
             }
-
+        }else if(source == btnSetStart){
+            if(!RouteManager.getWaypoints().contains(current) && !RouteManager.getAvoidList().contains(current) && RouteManager.getEnd() != current){
+                RouteManager.setStart(current);
+            }else{
+                System.out.println("WARNING: This point has already been used!");
+            }
+        }else if(source == btnSetEnd){
+            if(!RouteManager.getWaypoints().contains(current) && !RouteManager.getAvoidList().contains(current) &&RouteManager.getStart() != current){
+                RouteManager.setEnd(current);
+            }else{
+                System.out.println("WARNING: This point has already been used!");
+            }
+        }else if(source == btnClearRoute){
+            RouteManager.setStart(null);
+            RouteManager.setEnd(null);
+            RouteManager.getWaypoints().clear();
+            RouteManager.getAvoidList().clear();
+            mapPane.getChildren().removeIf(node -> node instanceof Line);
+            showRouteContainer.setVisible(false);
         }
+
+        // Update labels
+        StringBuilder waypoints = new StringBuilder();
+        for(int i = 0; i < RouteManager.getWaypoints().size(); i++){
+            Marker currWaypoint = RouteManager.getWaypoints().get(i);
+            waypoints.append("\n - ");
+            waypoints.append(currWaypoint.getName());
+        }
+
+        StringBuilder avoiding = new StringBuilder();
+        for(int i = 0; i < RouteManager.getAvoidList().size(); i++){
+            Marker currWaypoint = RouteManager.getAvoidList().get(i);
+            avoiding.append("\n - ");
+            avoiding.append(currWaypoint.getName());
+        }
+
+        if(!RouteManager.getWaypoints().isEmpty()){
+            lblWaypoints.setText("Waypoints:" + waypoints);
+        }else{
+            lblWaypoints.setText("Waypoints: \n - None");
+        }
+        if(!RouteManager.getAvoidList().isEmpty()){
+            lblAvoid.setText("Avoiding:" + avoiding);
+        }else{
+            lblAvoid.setText("Avoiding: \n - None");
+        }
+        if(RouteManager.getStart() != null){
+            lblStart.setText("Start Point: " + RouteManager.getStart().getName());
+        }else{
+            lblStart.setText("Start Point: Not Set");
+        }
+        if(RouteManager.getEnd() != null){
+            lblEnd.setText("End Point: " + RouteManager.getEnd().getName());
+        }else{
+            lblEnd.setText("End Point: Not Set");
+        }
+
     }
 
     public void addLink(ActionEvent event){
@@ -248,7 +257,62 @@ public class ControllerMain {
 
     @FXML
     public void calculateRoute(){
-        System.out.println("Calculate Link");
+        mapPane.getChildren().removeIf(node -> node instanceof LineShortestRoute);
+        mapPane.getChildren().removeIf(node -> node instanceof LineEasiestRoute);
+        mapPane.getChildren().removeIf(node -> node instanceof LineSafestRoute);
+        RouteCalculater.CostedPath shortestRoute = RouteCalculater.findCheapestPathDijkstra(RouteManager.getStart(), RouteManager.getEnd(), "shortest");
+        RouteCalculater.CostedPath easiestRoute = RouteCalculater.findCheapestPathDijkstra(RouteManager.getStart(), RouteManager.getEnd(), "easiest");
+        RouteCalculater.CostedPath safestRoute = RouteCalculater.findCheapestPathDijkstra(RouteManager.getStart(), RouteManager.getEnd(), "safest");
+
+        GuiManager.setRoutes(shortestRoute, easiestRoute, safestRoute);
+
+        showRouteContainer.setVisible(true);
+
+        if(shortestRoute != null){
+            System.out.println("Shortest Route: " + shortestRoute.getPathCost());
+            showRouteShortest.setSelected(true);
+            GuiManager.drawRoute("shortest");
+        }else{
+            showRouteShortest.setVisible(false);
+            System.out.println("No route found!");
+        }
+
+        if(easiestRoute != null){
+            System.out.println("Easiest Route: " + easiestRoute.getPathCost());
+        }else{
+            System.out.println("No route found!");
+            showRouteEasiest.setVisible(false);
+        }
+
+        if(safestRoute != null){
+            System.out.println("Safest Route: " + safestRoute.getPathCost());
+        }else{
+            System.out.println("No route found!");
+            showRouteSafest.setVisible(false);
+        }
+    }
+
+    @FXML
+    public void showRoutes(ActionEvent event){
+        if(event.getSource() == showRouteShortest){
+            if(showRouteShortest.isSelected()){
+                GuiManager.drawRoute("shortest");
+            }else{
+                mapPane.getChildren().removeIf(node -> node instanceof LineShortestRoute);
+            }
+        }else if(event.getSource() == showRouteEasiest){
+            if(showRouteEasiest.isSelected()){
+                GuiManager.drawRoute("easiest");
+            }else{
+                mapPane.getChildren().removeIf(node -> node instanceof LineEasiestRoute);
+            }
+        }else{
+            if(showRouteSafest.isSelected()){
+                GuiManager.drawRoute("safest");
+            }else{
+                mapPane.getChildren().removeIf(node -> node instanceof LineSafestRoute);
+            }
+        }
     }
 
 

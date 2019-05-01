@@ -2,6 +2,7 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
@@ -103,6 +104,38 @@
                                     <Insets bottom="5.0" top="5.0" />
                                  </VBox.margin>
                               </Separator>
+                              <VBox fx:id="showRouteContainer" prefHeight="50.0" prefWidth="100.0">
+                                 <children>
+                                    <Label text="Show Routes:">
+                                       <VBox.margin>
+                                          <Insets bottom="2.0" left="2.0" />
+                                       </VBox.margin>
+                                    </Label>
+                                    <CheckBox fx:id="showRouteShortest" mnemonicParsing="false" onAction="#showRoutes" text="Shortest Route">
+                                       <VBox.margin>
+                                          <Insets bottom="2.0" left="2.0" />
+                                       </VBox.margin>
+                                    </CheckBox>
+                                    <CheckBox fx:id="showRouteEasiest" layoutX="10.0" layoutY="29.0" mnemonicParsing="false" onAction="#showRoutes" text="Easiest Route">
+                                       <VBox.margin>
+                                          <Insets bottom="2.0" left="2.0" />
+                                       </VBox.margin>
+                                    </CheckBox>
+                                    <CheckBox fx:id="showRouteSafest" layoutX="10.0" layoutY="48.0" mnemonicParsing="false" onAction="#showRoutes" text="Safest Route">
+                                       <VBox.margin>
+                                          <Insets bottom="2.0" left="2.0" />
+                                       </VBox.margin>
+                                    </CheckBox>
+                                    <Separator prefWidth="200.0">
+                                       <VBox.margin>
+                                          <Insets bottom="5.0" top="5.0" />
+                                       </VBox.margin>
+                                    </Separator>
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin>
+                              </VBox>
                            </children>
                         </VBox>
                      </children>

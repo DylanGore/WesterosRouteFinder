@@ -1,3 +1,4 @@
+/* Display map in scroll pane */
 #mapPane {
     -fx-background-image: url("../map.jpg");
     -fx-background-color: red;
@@ -6,56 +7,68 @@
     -fx-background-position: center center;
 }
 
+/* Marker Icon - master */
 .mapBtn {
-    /*-fx-background-color: black;*/
     -fx-background-radius: 50%;
     -fx-text-fill: transparent;
 }
 
+/* Marker Icon - House Stark */
 .starkMarker{
     -fx-background-image: url("icons/stark.png");
 }
 
+/* Marker Icon - House Lannister */
 .lannisterMarker{
     -fx-background-image: url("icons/lannister.png");
 }
 
+/* Marker Icon - House Targaryen */
 .targaryenMarker{
     -fx-background-image: url("icons/targaryen.png");
 }
 
+/* Marker Icon - The Night King */
 .nightKingMarker{
     -fx-background-image: url("icons/night-king.png");
 }
 
+/* Marker Icon - House Arryn */
 .arrynMarker{
     -fx-background-image: url("icons/arryn.png");
 }
 
+/* Marker Icon - House Greyjoy */
 .greyjoyMarker{
     -fx-background-image: url("icons/greyjoy.png");
 }
 
+/* Marker Icon - House Martell */
 .martellMarker{
     -fx-background-image: url("icons/martell.png");
 }
 
+/* Marker Icon - Dothraki */
 .dothrakiMarker{
     -fx-background-image: url("icons/dothraki.png");
 }
 
+/* Marker Icon - Self */
 .selfMarker{
     -fx-background-image: url("icons/self.png");
 }
 
+/* Marker Icon - Other/Unknown */
 .otherMarker{
     -fx-background-image: url("icons/other.png");
 }
 
+/* Marker Icon - Abandoned */
 .abandonedMarker{
     -fx-background-image: url("icons/abandoned.png");
 }
 
+/* Center map on coordinate button */
 .btnCoordinate{
     -fx-background-image: url("icons/geopoint.png");
 }

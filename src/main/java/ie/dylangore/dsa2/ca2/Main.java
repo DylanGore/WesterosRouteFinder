@@ -9,10 +9,18 @@ import javafx.stage.Stage;
 
 public class Main extends Application {
 
+    /**
+     * Main method - called first on load
+     * @param args program arguments
+     */
     public static void main(String[] args) {
         launch(args);
     }
 
+    /**
+     * JavaFX start method - loads GUI
+     * @param primaryStage main window
+     */
     @Override
     public void start(Stage primaryStage) {
         try {
@@ -22,7 +30,7 @@ public class Main extends Application {
             primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("/gui/icon.png")));
             primaryStage.setScene(scene);
             primaryStage.setResizable(false);
-            primaryStage.setTitle("Westeros Link Planner");
+            primaryStage.setTitle("Citadel Maps");
             System.out.println("Loading...");
             primaryStage.show();
         } catch(Exception e) {

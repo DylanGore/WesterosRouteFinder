@@ -14,8 +14,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Handles save/load functionality
+ */
 public class DataManager {
 
+    /**
+     * Save all lists to disk
+     */
     public static void saveAll(){
         saveListToCSV("regions.csv", ListManager.getRegionList());
         saveListToCSV("affiliations.csv", ListManager.getAffiliationList());
@@ -23,6 +29,9 @@ public class DataManager {
         saveListToCSV("links.csv", ListManager.getLinkList());
     }
 
+    /**
+     * Load all lists from disk
+     */
     public static void loadAll(){
         loadListFromCSV("regions.csv", ListManager.getRegionList());
         loadListFromCSV("affiliations.csv", ListManager.getAffiliationList());
@@ -30,6 +39,11 @@ public class DataManager {
         loadListFromCSV("links.csv", ListManager.getLinkList());
     }
 
+    /***
+     * Save a given list to a CSV file
+     * @param filePath file name and location for CSV file
+     * @param list list to save
+     */
     private static void saveListToCSV(String filePath, ObservableList list) {
         File file = new File(filePath);
 
@@ -79,6 +93,11 @@ public class DataManager {
         }
     }
 
+    /**
+     * Load a given list from CSV file
+     * @param fileName file name and location for CSV file
+     * @param list list to load into
+     */
     private static void loadListFromCSV(String fileName, ObservableList list){
         try {
             FileReader reader = new FileReader(fileName);
