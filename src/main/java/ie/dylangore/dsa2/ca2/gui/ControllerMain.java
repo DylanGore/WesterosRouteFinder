@@ -56,6 +56,7 @@ public class ControllerMain {
     protected void initialize(){
         ListManager.init();
         RouteManager.init();
+        GuiManager.setRealGui(true);
         GuiManager.setMapPane(mapPane);
         GuiManager.setAvailablePlaces(availablePlaces);
         GuiManager.setAddLinkPlaces(addLinkPlaces);

@@ -300,18 +300,21 @@
                            <Insets bottom="2.0" />
                         </padding>
                      </Label>
-                     <Button fx:id="btnVisLinks" mnemonicParsing="false" onAction="#toggleLinks" prefWidth="280.0" text="Show/Hide Links">
+                     <Button fx:id="btnVisLinks" mnemonicParsing="false" onAction="#toggleLinks" prefHeight="25.0" prefWidth="280.0" text="Show/Hide Links">
                         <padding>
                            <Insets bottom="2.0" />
                         </padding>
                         <VBox.margin>
-                           <Insets bottom="2.0" />
+                           <Insets bottom="2.0" left="1.0" right="1.0" top="2.0" />
                         </VBox.margin>
                      </Button>
-                     <Button fx:id="btnAbout" layoutX="10.0" layoutY="119.0" mnemonicParsing="false" onAction="#displayAboutAlert" prefWidth="280.0" text="About">
+                     <Button fx:id="btnAbout" layoutX="10.0" layoutY="119.0" mnemonicParsing="false" onAction="#displayAboutAlert" prefHeight="25.0" prefWidth="280.0" text="About">
                         <padding>
                            <Insets bottom="2.0" />
                         </padding>
+                        <VBox.margin>
+                           <Insets bottom="2.0" left="1.0" right="1.0" top="2.0" />
+                        </VBox.margin>
                      </Button>
                      <Separator layoutX="10.0" layoutY="92.0" prefWidth="200.0">
                         <VBox.margin>

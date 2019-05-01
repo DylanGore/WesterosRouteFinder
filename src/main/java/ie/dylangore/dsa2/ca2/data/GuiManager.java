@@ -22,6 +22,7 @@ public class GuiManager {
     private static Marker lastClickedMarker;
     private static ChoiceBox<Marker> availablePlaces, addLinkPlaces;
     private static RouteCalculater.CostedPath shortestRoute, easiestRoute, safestRoute;
+    private static boolean realGui;
 
     /**
      * Create a new button on the map corresponding to the new marker
@@ -52,7 +53,9 @@ public class GuiManager {
             availablePlaces.getSelectionModel().select(selected);
             addLinkPlaces.getSelectionModel().select(selected);
         });
-        mapPane.getChildren().add(markerButton);
+        if(realGui){
+            mapPane.getChildren().add(markerButton);
+        }
     }
 
     /**
@@ -215,5 +218,13 @@ public class GuiManager {
         alert.initStyle(StageStyle.UTILITY);
         alert.showAndWait();
         System.out.println(header + ": " + content);
+    }
+
+    /**
+     * Used to set value for real GUI to differentiate between Application and Test runs
+     * @param value desired value
+     */
+    public static void setRealGui(Boolean value){
+        realGui = value;
     }
 }
