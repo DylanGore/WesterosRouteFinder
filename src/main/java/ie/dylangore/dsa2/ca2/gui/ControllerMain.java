@@ -187,6 +187,9 @@ public class ControllerMain {
             RouteManager.getWaypoints().clear();
             RouteManager.getAvoidList().clear();
             mapPane.getChildren().removeIf(node -> node instanceof Line);
+            showRouteShortest.setSelected(false);
+            showRouteEasiest.setSelected(false);
+            showRouteSafest.setSelected(false);
             showRouteContainer.setVisible(false);
         }
 

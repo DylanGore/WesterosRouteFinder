@@ -1,5 +1,7 @@
 package ie.dylangore.dsa2.ca2.types;
 
+import ie.dylangore.dsa2.ca2.data.ListManager;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -245,12 +247,51 @@ public class Link {
             }
         }
 
-        // Factor in Region
-        // TODO add end
-        if(this.getStart().getRegion().equals("The North") || this.getStart().getRegion().equals("Dorne")){
-            score = score + 2;
-        }
+        // Factor in Affiliation
+        score = getAffiliationScore(score, start);
 
+        score = getAffiliationScore(score, end);
+
+        // Special cases
+        List<Marker> specialCases = new ArrayList<>();
+        specialCases.add(ListManager.getMarkerByName("Valyria"));
+        specialCases.add(ListManager.getMarkerByName("Asshai"));
+        if(specialCases.contains(getStart()) || specialCases.contains(getEnd()))
+            score = score + 8;
+        return score;
+    }
+
+    /**
+     * Calculate change to score depending on affiliation
+     * @param score current score
+     * @param marker place to get affiliation of
+     * @return new score
+     */
+    private int getAffiliationScore(int score, Marker marker) {
+        switch(marker.getAffiliation()){
+            case "Daenerys":
+                score = score + 2;
+            case "The Crown":
+                score = score + 4;
+            case "House Stark":
+                score = score + 2;
+            case "House Greyjoy":
+                score = score + 2;
+            case "House Arryn":
+                score = score + 1;
+            case "House Martell":
+                score = score + 3;
+            case "Dothraki":
+                score = score + 4;
+            case "The Night King":
+                score = score + 5;
+            case "Self":
+                score = score + 1;
+            case "Abandoned":
+                score = score + 2;
+            default:
+                score = score + 1;
+        }
         return score;
     }
 
